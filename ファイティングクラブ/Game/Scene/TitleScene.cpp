@@ -5,9 +5,9 @@
 #include "pch.h"
 #include "TitleScene.h"
 #include "Game/Screen.h"
-#include "Framework/Graphics.h"
-#include "Framework/input.h"
 #include "FrameWork/DeviceResources.h"
+#include "FrameWork/Graphics.h"
+#include "FrameWork/Input.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include <cassert>
 
@@ -120,7 +120,7 @@ void TitleScene::Render()
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
 
 	// TRIDENTƒƒS‚Ì•`‰æˆÊ’u‚ğŒˆ‚ß‚é
-	RECT rect{ Graphics::GetInstance()->GetDeviceResources()->GetOutputSize() };
+	RECT rect{ Graphics::GetInstance()->GetDeviceResources()->GetOutputSize()};
 	// ‰æ‘œ‚Ì’†S‚ğŒvZ‚·‚é
 	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
 

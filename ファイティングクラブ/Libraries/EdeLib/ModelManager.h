@@ -6,7 +6,6 @@
 #include<map>
 #include<memory>
 
-// 一般的なシーンクラス
 namespace Ede
 {
 	class ModelManager
@@ -17,9 +16,9 @@ namespace Ede
 		ModelManager();
 
 	public:
-		void AddModelData(const char* key, const TCHAR* pass, ID3D11Device1* device);
+		void AddModelData(const char* key, const TCHAR* pass);
 		void DrawModel(const char* key,
-			ID3D11DeviceContext1* context, DirectX::CommonStates* states, DirectX::SimpleMath::Matrix world,
-			DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
+			const DirectX::SimpleMath::Matrix& world
+		);
 	};
 }

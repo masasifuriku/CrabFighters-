@@ -4,6 +4,9 @@
 */
 #include "pch.h"
 #include "ModelManager.h"
+#include "FrameWork/DeviceResources.h"
+#include "FrameWork/Graphics.h"
+
 
 
 //---------------------------------------------------------
@@ -16,24 +19,31 @@ Ede::ModelManager::ModelManager()
 }
 
 //3Dモデルの読み込み
-void Ede::ModelManager::AddModelData(const char* key, const TCHAR* pass,ID3D11Device1* device)
+void Ede::ModelManager::AddModelData(const char* key, const TCHAR* pass)
 {
 	// モデルを読み込む準備
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
+	DirectX::EffectFactory* fx = Graphics::GetInstance()->GetFX();
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む
+	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	std::unique_ptr<DirectX::Model> temp = DirectX::Model::CreateFromCMO(device, pass, *fx);
-	//モデルに登録する
+	//モデルを登録する
 	m_model.emplace(key, std::move(temp));
 }
 
 //3Dモデルの描画
-void Ede::ModelManager::DrawModel(const char* key,
-	ID3D11DeviceContext1* context, DirectX::CommonStates* states, DirectX::SimpleMath::Matrix world,
-	DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
+void Ede::ModelManager::DrawModel(
+	const char* key,
+	const DirectX::SimpleMath::Matrix& world
+	)
 {
 	//引数で指定されたキーのモデルを探して保存
 	std::map<const char*, std::unique_ptr<DirectX::Model>>::const_iterator it = m_model.find(key);
 	//見つけたモデルの描画
+	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = Graphics::GetInstance()->GetCommonStates();
+	DirectX::SimpleMath::Matrix view = Graphics::GetInstance()->GetViewMatrix();
+	DirectX::SimpleMath::Matrix proj = Graphics::GetInstance()->GetProjectionMatrix();
+
 	it->second->Draw(context, *states, world, view, proj);
 }

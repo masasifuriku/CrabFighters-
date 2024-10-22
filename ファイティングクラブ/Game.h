@@ -10,10 +10,9 @@
 // ★includeの追記★
 #include "Interface/IScene.h"
 #include "Game/Scene/SceneManager.h"
+#include "Libraries/MyLib/DebugString.h"
 #include "Framework/Graphics.h"
 #include "Framework/Input.h"
-
-
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
@@ -68,16 +67,29 @@ private:
     // Rendering loop timer.
     DX::StepTimer                           m_timer;
 
+    // デバッグストリング
+    std::unique_ptr<mylib::DebugString>     m_debugString;
 
-    // ★追記ココから↓↓↓
-    
     // シーンマネージャ
     std::unique_ptr<SceneManager>           m_sceneManager;
 
-    // グラフィックス
+    //グラフィックス
     Graphics* m_graphics;
     //インプット
     Input* m_input;
 
-    // ★追記ココまで↑↑↑★
+
+    // フルスクリーン関連
+private:
+    // フルスクリーン判定
+    BOOL m_fullScreen;
+
+public:
+    // 画面モードを変更する関数（TRUE:フルスクリーン）
+    void SetFullscreenState(BOOL value)
+    {
+        m_fullScreen = value;
+        m_deviceResources->GetSwapChain()->SetFullscreenState(value, nullptr);
+        if (value) m_deviceResources->CreateWindowSizeDependentResources();
+    }
 };

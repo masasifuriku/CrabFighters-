@@ -19,6 +19,9 @@ private:
 	// 格子床
 	std::unique_ptr<mylib::GridFloor> m_gridFloor;
 
+	// 射影行列
+	DirectX::SimpleMath::Matrix m_projection;
+
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
 

@@ -4,9 +4,10 @@
 */
 #include "pch.h"
 #include "ResultScene.h"
-#include "Framework/Graphics.h"
-#include "Framework/input.h"
 #include "FrameWork/DeviceResources.h"
+#include "FrameWork/Graphics.h"
+#include "FrameWork/Input.h"
+#include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/GridFloor.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include <cassert>
@@ -20,6 +21,7 @@ using namespace DirectX::SimpleMath;
 ResultScene::ResultScene()
 	:
 	m_gridFloor{},
+	m_projection{},
 	m_isChangeScene{},
 	m_model{}
 {
@@ -48,7 +50,7 @@ void ResultScene::Initialize()
 
 	// モデルを読み込む
 	m_model = std::make_unique<Ede::ModelManager>();
-	m_model->AddModelData("dice", L"Resources/Models/dice.cmo", device);
+	m_model->AddModelData("dice", L"Resources/Models/dice.cmo");
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
@@ -81,6 +83,10 @@ void ResultScene::Render()
 
 	// ワールド行列を更新する
 	Matrix world;
+
+	//// デバッグ情報を「DebugString」で表示する
+	//auto debugString = m_commonResources->GetDebugString();
+	//debugString->AddString("Result Scene");
 }
 
 //---------------------------------------------------------

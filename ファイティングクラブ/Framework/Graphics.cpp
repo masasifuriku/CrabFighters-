@@ -61,6 +61,8 @@ void Graphics::Initialize()
 	m_spriteFont = std::make_unique<DirectX::SpriteFont>(m_device, L"Resources\\Fonts\\SegoeUI_18.spritefont");
 	// プリミティブバッチを生成する
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(m_context);
+	//カラーなし
+	m_pripriBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPosition>>(m_context);
 	// 頂点カラーを有効にする
 	m_basicEffect->SetVertexColorEnabled(true);
 	// テクスチャを無効にする

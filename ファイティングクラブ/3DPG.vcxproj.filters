@@ -59,8 +59,20 @@
     <Filter Include="Game\Scene\Play\Enemy">
       <UniqueIdentifier>{037ff0a2-0e0d-4bda-9c47-b96d0daa20d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework">
-      <UniqueIdentifier>{dd1694fb-0586-4f8d-bda2-66a33f955322}</UniqueIdentifier>
+    <Filter Include="Game\Scene\Play\Enemy\Bird">
+      <UniqueIdentifier>{204543f0-4cac-49b5-bdab-2b7fe2d455cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Scene\Play\Enemy\Shark">
+      <UniqueIdentifier>{f51e3592-6dcb-45c8-b687-da69a76fed83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Scene\Play\Enemy\Crab">
+      <UniqueIdentifier>{ac76eed5-ab90-466f-90d5-0ccc4880e7d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Scene\Play\Stage">
+      <UniqueIdentifier>{0e991b61-fce3-48be-bef5-fd4ded1a5db3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Scene\Play\Boss">
+      <UniqueIdentifier>{be201d22-b75b-4b4b-a594-8ded17dfc55c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +86,9 @@
     </ClInclude>
     <ClInclude Include="Game\Screen.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\MyLib\DebugString.h">
+      <Filter>Libraries\MyLib</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MyLib\GridFloor.h">
       <Filter>Libraries\MyLib</Filter>
@@ -96,14 +111,11 @@
     <ClInclude Include="Game\Scene\TitleScene.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Scene\Play\Player\Player.h">
+    <ClInclude Include="Game\Scene\Play\Player\PlayerBody.h">
       <Filter>Game\Scene\Play\Player</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MyLib\TPS_Camera.h">
       <Filter>Libraries\MyLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Scene\Play\Enemy\Enemy.h">
-      <Filter>Game\Scene\Play\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MyLib\UtilityMath.h">
       <Filter>Libraries\MyLib</Filter>
@@ -111,21 +123,38 @@
     <ClInclude Include="Libraries\MyLib\CollisionMesh.h">
       <Filter>Libraries\MyLib</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Graphics.h">
-      <Filter>Framework</Filter>
+    <ClInclude Include="Interface\IEnemy.h">
+      <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Resources.h">
-      <Filter>Framework</Filter>
+    <ClInclude Include="Game\Scene\Play\Enemy\EnemyManager.h">
+      <Filter>Game\Scene\Play\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scene\Play\Player\PlayerHand.h">
+      <Filter>Game\Scene\Play\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scene\Play\Enemy\Bird\EnemyBird.h">
+      <Filter>Game\Scene\Play\Enemy\Bird</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scene\Play\Enemy\Crab\EnemyCrab.h">
+      <Filter>Game\Scene\Play\Enemy\Crab</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scene\Play\Enemy\Shark\EnemyShark.h">
+      <Filter>Game\Scene\Play\Enemy\Shark</Filter>
     </ClInclude>
     <ClInclude Include="Interface\IScene.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Input.h">
-      <Filter>Framework</Filter>
+    <ClInclude Include="Game\Scene\Play\Stage\Stage.h">
+      <Filter>Game\Scene\Play\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\DeviceResources.h">
-      <Filter>Framework</Filter>
+    <ClInclude Include="Libraries\EdeLib\TextureManager.h">
+      <Filter>Libraries\EdeLib</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Scene\Play\Enemy\Boss\EnemyBoss.h" />
+    <ClInclude Include="Framework\DeviceResources.h" />
+    <ClInclude Include="Framework\Graphics.h" />
+    <ClInclude Include="Framework\Input.h" />
+    <ClInclude Include="Framework\Resources.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -133,6 +162,9 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Libraries\Microsoft\DebugDraw.cpp">
       <Filter>Libraries\Microsoft</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\MyLib\DebugString.cpp">
+      <Filter>Libraries\MyLib</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MyLib\GridFloor.cpp">
       <Filter>Libraries\MyLib</Filter>
@@ -152,30 +184,41 @@
     <ClCompile Include="Game\Scene\TitleScene.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Scene\Play\Player\Player.cpp">
+    <ClCompile Include="Game\Scene\Play\Player\PlayerBody.cpp">
       <Filter>Game\Scene\Play\Player</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MyLib\TPS_Camera.cpp">
       <Filter>Libraries\MyLib</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Scene\Play\Enemy\Enemy.cpp">
-      <Filter>Game\Scene\Play\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\MyLib\CollisionMesh.cpp">
       <Filter>Libraries\MyLib</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\Graphics.cpp">
-      <Filter>Framework</Filter>
+    <ClCompile Include="Game\Scene\Play\Enemy\EnemyManager.cpp">
+      <Filter>Game\Scene\Play\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\Resources.cpp">
-      <Filter>Framework</Filter>
+    <ClCompile Include="Game\Scene\Play\Player\PlayerHand.cpp">
+      <Filter>Game\Scene\Play\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\Input.cpp">
-      <Filter>Framework</Filter>
+    <ClCompile Include="Game\Scene\Play\Enemy\Bird\EnemyBird.cpp">
+      <Filter>Game\Scene\Play\Enemy\Bird</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\DeviceResources.cpp">
-      <Filter>Framework</Filter>
+    <ClCompile Include="Game\Scene\Play\Enemy\Crab\EnemyCrab.cpp">
+      <Filter>Game\Scene\Play\Enemy\Crab</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Scene\Play\Enemy\Shark\EnemyShark.cpp">
+      <Filter>Game\Scene\Play\Enemy\Shark</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scene\Play\Stage\Stage.cpp">
+      <Filter>Game\Scene\Play\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\EdeLib\TextureManager.cpp">
+      <Filter>Libraries\EdeLib</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scene\Play\Enemy\Boss\EnemyBoss.cpp" />
+    <ClCompile Include="Framework\DeviceResources.cpp" />
+    <ClCompile Include="Framework\Graphics.cpp" />
+    <ClCompile Include="Framework\Input.cpp" />
+    <ClCompile Include="Framework\Resources.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

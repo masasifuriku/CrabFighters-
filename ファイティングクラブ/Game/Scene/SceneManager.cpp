@@ -9,6 +9,8 @@
 #include "ResultScene.h"
 #include "Game/Screen.h"
 #include "FrameWork/DeviceResources.h"
+#include "FrameWork/Graphics.h"
+#include "FrameWork/Input.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include <cassert>
 
@@ -35,7 +37,7 @@ SceneManager::~SceneManager()
 //---------------------------------------------------------
 void SceneManager::Initialize()
 {
-	ChangeScene(IScene::SceneID::PLAY);
+	ChangeScene(IScene::SceneID::TITLE);
 }
 
 //---------------------------------------------------------

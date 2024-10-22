@@ -6,13 +6,13 @@
 #include "Interface/IScene.h"
 
 // 前方宣言
-class Player;
-class Enemy;
+class PlayerBody;
+class EnemyManager;
+class Stage;
 
 namespace mylib
 {
 	class TPS_Camera;
-	class GridFloor;
 }
 
 
@@ -20,19 +20,18 @@ class PlayScene final :
     public IScene
 {
 private:
-	// デバッグカメラ
+	// TPSカメラ
 	std::unique_ptr<mylib::TPS_Camera> m_camera;
-
-	// 格子床
-	std::unique_ptr<mylib::GridFloor> m_gridFloor;
 
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
 
 	//プレイヤー
-	std::unique_ptr<Player> m_player;
+	std::unique_ptr<PlayerBody> m_player;
 	//敵
-	std::unique_ptr<Enemy> m_enemy;
+	std::unique_ptr<EnemyManager> m_enemy;
+	//ステージ
+	std::unique_ptr<Stage> m_stage;
 	
 	
 public:
@@ -45,4 +44,17 @@ public:
 	void Finalize() override;
 
 	SceneID GetNextSceneID() const;
+
+private:
+	//カニの更新
+	void UpdateCrabs();
+	//サメの更新
+	void UpdateSharks();
+	//鳥の更新
+	void UpdateBirds();
+	//ボスの更新
+	void UpdateBoss();
+
+	//デバック情報
+	void DrawDebug();
 };

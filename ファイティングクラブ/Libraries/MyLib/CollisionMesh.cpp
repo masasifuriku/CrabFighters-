@@ -7,6 +7,9 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "FrameWork/DeviceResources.h"
+#include "FrameWork/Graphics.h"
+
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -31,14 +34,9 @@ mylib::CollisionMesh::CollisionMesh()
 // 初期化する
 //-----------------------------------------------------
 void mylib::CollisionMesh::Initialize(
-	ID3D11Device* device,
-	ID3D11DeviceContext* context,
 	const std::wstring& objName
 )
 {
-	assert(device);
-	assert(context);
-
 	// Objファイルを読み込む
 	this->LoadObjFile(objName);
 
@@ -51,6 +49,9 @@ void mylib::CollisionMesh::Initialize(
 			m_vertices[m_indices[i * 3 + 2]].position
 		);
 	}
+
+	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
+	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 	// 描画オブジェクトを準備する
 	m_basicEffect = std::make_unique<BasicEffect>(device);
@@ -69,15 +70,12 @@ void mylib::CollisionMesh::Initialize(
 //-----------------------------------------------------
 // 描画する
 //-----------------------------------------------------
-void mylib::CollisionMesh::Draw(
-	ID3D11DeviceContext* context,
-	DirectX::CommonStates* states,
-	const DirectX::SimpleMath::Matrix& view,
-	const DirectX::SimpleMath::Matrix& projection
-)
+void mylib::CollisionMesh::Draw()
 {
-	assert(context);
-	assert(states);
+	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = Graphics::GetInstance()->GetCommonStates();
+	DirectX::SimpleMath::Matrix view = Graphics::GetInstance()->GetViewMatrix();
+	DirectX::SimpleMath::Matrix projection = Graphics::GetInstance()->GetProjectionMatrix();
 
 	// デバイスコンテキストのパラメータを設定する
 	context->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
@@ -144,12 +142,12 @@ bool mylib::CollisionMesh::IntersectRay(
 
 		// レイとポリゴンの衝突判定をとる
 		if (unitRay.Intersects(
-				m_triangles[i].triangle[0],
-				m_triangles[i].triangle[1],
-				m_triangles[i].triangle[2],
-				distance
-			)
+			m_triangles[i].triangle[0],
+			m_triangles[i].triangle[1],
+			m_triangles[i].triangle[2],
+			distance
 		)
+			)
 		{
 			// 衝突点の座標を計算する
 			*hitPosition = Vector3{ unitRay.position + unitRay.direction * distance };

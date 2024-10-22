@@ -18,6 +18,8 @@ public:
 	DX::DeviceResources* GetDeviceResources() const { return m_deviceResources.get(); }
 	// プリミティブバッチを取得する
 	DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* GetPrimitiveBatch() const { return m_primitiveBatch.get(); }
+	//カラーなし
+	DirectX::PrimitiveBatch<DirectX::VertexPosition>* GetPripriBatch() const { return m_pripriBatch.get(); }
 	// インプットレイアウトを取得する
 	ID3D11InputLayout* GetInputLayout() const { return m_inputLayout.Get(); }
 	// ベイシックエフェクトを取得する
@@ -94,6 +96,8 @@ private:
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	// プリミティブバッチ
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
+	//カラーなし
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPosition>> m_pripriBatch;
 	// エフェクトファクトリー
 	std::unique_ptr<DirectX::EffectFactory> m_effectFactory;
 	// ラスタライザーステート

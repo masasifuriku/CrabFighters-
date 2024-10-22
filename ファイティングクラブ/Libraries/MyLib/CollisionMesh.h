@@ -58,18 +58,11 @@ namespace mylib
 
 		// メッシュオブジェクトを作成する
 		void Initialize(
-			ID3D11Device* device,
-			ID3D11DeviceContext* context,
 			const std::wstring& objName
 		);
 
 		// メッシュデータをワイヤーフレームで描画する
-		void Draw(
-			ID3D11DeviceContext* context,
-			DirectX::CommonStates* states,
-			const DirectX::SimpleMath::Matrix& view,
-			const DirectX::SimpleMath::Matrix& projection
-		);
+		void Draw();
 
 		// メッシュとRayとの衝突判定
 		bool IntersectRay(

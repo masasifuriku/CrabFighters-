@@ -12,12 +12,12 @@ public:
 	//キーボードトラッカーを取得する
 	DirectX::Keyboard::KeyboardStateTracker* GetKeyTracker() { return m_keyTracker.get(); }
 	//キーボードステートを取得する
-	DirectX::Keyboard::State* GetKeyState() { return m_keyState.get(); }
+	const DirectX::Keyboard::State& GetKeyState()const { return m_keyState; }
 
 	//マウストラッカーを取得する
 	DirectX::Mouse::ButtonStateTracker* GetMouseTracker() { return m_mouseTracker.get(); }
 	//マウスステートを取得する
-	DirectX::Mouse::State* GetMouseState() { return m_mouseState.get();}
+	const DirectX::Mouse::State& GetMouseState()const { return m_mouseState; }
 
 public:
 	// デストラクタ
@@ -44,12 +44,12 @@ private:
 	//キーボード
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
 	std::unique_ptr<DirectX::Keyboard::KeyboardStateTracker> m_keyTracker;
-	std::unique_ptr<DirectX::Keyboard::State> m_keyState;
+	DirectX::Keyboard::State m_keyState;
 
 	//マウス
 	std::unique_ptr<DirectX::Mouse> m_mouse;
 	std::unique_ptr<DirectX::Mouse::ButtonStateTracker> m_mouseTracker;
-	std::unique_ptr<DirectX::Mouse::State> m_mouseState;
+	DirectX::Mouse::State m_mouseState;
 };
 
 #endif		// Input_DEFINED

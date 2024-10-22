@@ -7,7 +7,6 @@
 #include "Game/Screen.h"
 #include "Game/Scene/SceneManager.h"
 
-
 extern void ExitGame() noexcept;
 
 using namespace DirectX;
@@ -18,16 +17,15 @@ Game::Game() noexcept(false)
     :
     m_deviceResources{},
     m_timer{},
+    m_debugString{},
     m_sceneManager{}
 {
     //グラフィックスのインスタンスを取得
     m_graphics = Graphics::GetInstance();
     //インプットのインスタンスを取得
     m_input = Input::GetInstance();
-    //デバイスリソースを取得
     m_deviceResources = m_graphics->GetDeviceResources();
-    //デバイスの通知を設定
-    //m_deviceResources->RegisterDeviceNotify(this);
+    m_deviceResources->RegisterDeviceNotify(this);
 }
 
 // Initialize the Direct3D resources required to run.
@@ -52,14 +50,21 @@ void Game::Initialize(HWND window, int width, int height)
 
     // ★追記ココから↓↓↓★
 
-    // デバイスとコンテキストを取得する
-    auto device  = m_deviceResources->GetD3DDevice();
-    auto context = m_deviceResources->GetD3DDeviceContext();
-
     //グラフィックスの初期化
     m_graphics->Initialize();
     //インプットの初期化
     m_input->Initialize(window);
+
+    // デバイスとコンテキストを取得する
+    auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
+    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+
+    // デバッグ文字列を作成する
+    m_debugString = std::make_unique<mylib::DebugString>(
+        device,
+        context,
+        L"Resources/Fonts/SegoeUI_18.spritefont"
+    );
 
     // シーンマネージャを初期化する
     m_sceneManager = std::make_unique<SceneManager>();
@@ -97,7 +102,7 @@ void Game::Update(DX::StepTimer const& timer)
     const auto& keyboardState = m_input->GetKeyState();
 
     // 「ECS」キーで終了する
-    if (keyboardState->Escape)
+    if (keyboardState.Escape)
     {
         ExitGame();
     }
@@ -131,8 +136,14 @@ void Game::Render()
 
     UNREFERENCED_PARAMETER(context);
 
+    // デバッグ文字列を作成する：FPS
+    m_debugString->AddString("fps : %d", m_timer.GetFramesPerSecond());
+
     // シーンマネージャを描画する
     m_sceneManager->Render();
+
+    // デバッグ文字列を描画する
+    m_debugString->Render(m_graphics->GetCommonStates());
 
     // ★追記ココまで↑↑↑★
 
@@ -193,6 +204,17 @@ void Game::OnWindowMoved()
 {
     auto const r = m_deviceResources->GetOutputSize();
     m_deviceResources->WindowSizeChanged(r.right, r.bottom);
+
+    //フルスクリーンにするか？
+    BOOL fullScreen = FALSE;
+
+    m_deviceResources->GetSwapChain()->GetFullscreenState(&fullScreen, nullptr);
+
+    if (m_fullScreen != fullScreen)
+    {
+        m_fullScreen = fullScreen;
+        m_deviceResources->CreateWindowSizeDependentResources();
+    }
 }
 
 void Game::OnDisplayChange()
