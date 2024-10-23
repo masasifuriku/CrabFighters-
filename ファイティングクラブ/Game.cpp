@@ -17,13 +17,15 @@ Game::Game() noexcept(false)
     :
     m_deviceResources{},
     m_timer{},
-    m_debugString{},
     m_sceneManager{}
 {
     //グラフィックスのインスタンスを取得
     m_graphics = Graphics::GetInstance();
     //インプットのインスタンスを取得
     m_input = Input::GetInstance();
+    //リソース
+    m_resource = Resources::GetInstance();
+
     m_deviceResources = m_graphics->GetDeviceResources();
     m_deviceResources->RegisterDeviceNotify(this);
 }
@@ -54,17 +56,19 @@ void Game::Initialize(HWND window, int width, int height)
     m_graphics->Initialize();
     //インプットの初期化
     m_input->Initialize(window);
+    //リソースの読み恋
+    m_resource->LoadResource();
 
     // デバイスとコンテキストを取得する
     auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
-    // デバッグ文字列を作成する
-    m_debugString = std::make_unique<mylib::DebugString>(
-        device,
-        context,
-        L"Resources/Fonts/SegoeUI_18.spritefont"
-    );
+    //// デバッグ文字列を作成する
+    //m_debugString = std::make_unique<mylib::DebugString>(
+    //    device,
+    //    context,
+    //    L"Resources/Fonts/SegoeUI_18.spritefont"
+    //);
 
     // シーンマネージャを初期化する
     m_sceneManager = std::make_unique<SceneManager>();
@@ -136,14 +140,14 @@ void Game::Render()
 
     UNREFERENCED_PARAMETER(context);
 
-    // デバッグ文字列を作成する：FPS
-    m_debugString->AddString("fps : %d", m_timer.GetFramesPerSecond());
+    //// デバッグ文字列を作成する：FPS
+    //m_debugString->AddString("fps : %d", m_timer.GetFramesPerSecond());
 
     // シーンマネージャを描画する
     m_sceneManager->Render();
 
-    // デバッグ文字列を描画する
-    m_debugString->Render(m_graphics->GetCommonStates());
+    //// デバッグ文字列を描画する
+    //m_debugString->Render(m_graphics->GetCommonStates());
 
     // ★追記ココまで↑↑↑★
 

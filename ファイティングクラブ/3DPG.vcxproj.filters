@@ -87,9 +87,6 @@
     <ClInclude Include="Game\Screen.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Libraries\MyLib\DebugString.h">
-      <Filter>Libraries\MyLib</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\MyLib\GridFloor.h">
       <Filter>Libraries\MyLib</Filter>
     </ClInclude>
@@ -155,6 +152,7 @@
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\Input.h" />
     <ClInclude Include="Framework\Resources.h" />
+    <ClInclude Include="Framework\Collision.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -162,9 +160,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Libraries\Microsoft\DebugDraw.cpp">
       <Filter>Libraries\Microsoft</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MyLib\DebugString.cpp">
-      <Filter>Libraries\MyLib</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MyLib\GridFloor.cpp">
       <Filter>Libraries\MyLib</Filter>
@@ -219,6 +214,7 @@
     <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\Input.cpp" />
     <ClCompile Include="Framework\Resources.cpp" />
+    <ClCompile Include="Framework\Collision.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

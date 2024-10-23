@@ -180,6 +180,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Framework\Collision.h" />
     <ClInclude Include="Framework\DeviceResources.h" />
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\Input.h" />
@@ -204,7 +205,6 @@
     <ClInclude Include="Libraries\EdeLib\TextureManager.h" />
     <ClInclude Include="Libraries\Microsoft\DebugDraw.h" />
     <ClInclude Include="Libraries\MyLib\CollisionMesh.h" />
-    <ClInclude Include="Libraries\MyLib\DebugString.h" />
     <ClInclude Include="Libraries\MyLib\GridFloor.h" />
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
     <ClInclude Include="Libraries\MyLib\TPS_Camera.h" />
@@ -213,6 +213,7 @@
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\Collision.cpp" />
     <ClCompile Include="Framework\DeviceResources.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\Input.cpp" />
@@ -234,7 +235,6 @@
     <ClCompile Include="Libraries\EdeLib\TextureManager.cpp" />
     <ClCompile Include="Libraries\Microsoft\DebugDraw.cpp" />
     <ClCompile Include="Libraries\MyLib\CollisionMesh.cpp" />
-    <ClCompile Include="Libraries\MyLib\DebugString.cpp" />
     <ClCompile Include="Libraries\MyLib\GridFloor.cpp" />
     <ClCompile Include="Libraries\MyLib\TPS_Camera.cpp" />
     <ClCompile Include="Main.cpp" />

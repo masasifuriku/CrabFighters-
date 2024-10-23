@@ -32,6 +32,11 @@ private:
 	std::unique_ptr<EnemyManager> m_enemy;
 	//ステージ
 	std::unique_ptr<Stage> m_stage;
+
+	//スプライトバッチ
+	DirectX::SpriteBatch* m_Batch;
+	//スプライトフォント
+	DirectX::SpriteFont* m_Font;
 	
 	
 public:

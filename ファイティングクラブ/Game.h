@@ -10,9 +10,9 @@
 // ★includeの追記★
 #include "Interface/IScene.h"
 #include "Game/Scene/SceneManager.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "Framework/Graphics.h"
 #include "Framework/Input.h"
+#include "Framework/Resources.h"
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
@@ -67,9 +67,6 @@ private:
     // Rendering loop timer.
     DX::StepTimer                           m_timer;
 
-    // デバッグストリング
-    std::unique_ptr<mylib::DebugString>     m_debugString;
-
     // シーンマネージャ
     std::unique_ptr<SceneManager>           m_sceneManager;
 
@@ -77,6 +74,8 @@ private:
     Graphics* m_graphics;
     //インプット
     Input* m_input;
+    //リソース
+    Resources* m_resource;
 
 
     // フルスクリーン関連

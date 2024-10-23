@@ -8,6 +8,7 @@
 #include "FrameWork/DeviceResources.h"
 #include "FrameWork/Graphics.h"
 #include "FrameWork/Input.h"
+#include "Framework/Resources.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include <cassert>
 
@@ -49,43 +50,9 @@ void TitleScene::Initialize()
 	// スプライトフォントを作成する
 	m_spriteFont = Graphics::GetInstance()->GetFont();
 
-	// 画像をロードする
-	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(
-			device,
-			L"Resources/Textures/TridentLogo.png",
-			nullptr,
-			m_texture.ReleaseAndGetAddressOf()
-		)
-	);
-
-
-	/*
-		以下、テクスチャの大きさを求める→テクスチャの中心座標を計算する
-	*/
-	// 一時的な変数の宣言
-	Microsoft::WRL::ComPtr<ID3D11Resource> resource{};
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> tex2D{};
-	D3D11_TEXTURE2D_DESC desc{};
-	Vector2 texSize{};
-
 	// テクスチャの情報を取得する================================
 	// テクスチャをID3D11Resourceとして見る
-	m_texture->GetResource(resource.GetAddressOf());
-
-	// ID3D11ResourceをID3D11Texture2Dとして見る
-	resource.As(&tex2D);
-
-	// テクスチャ情報を取得する
-	tex2D->GetDesc(&desc);
-
-	// テクスチャサイズを取得し、float型に変換する
-	texSize.x = static_cast<float>(desc.Width);
-	texSize.y = static_cast<float>(desc.Height);
-
-	// テクスチャの中心位置を計算する
-	m_texCenter = texSize / 2.0f;
-
+	m_texture = Resources::GetInstance()->GetTexture(L"title");
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;

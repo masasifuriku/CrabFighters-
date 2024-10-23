@@ -19,6 +19,7 @@ private:
 	//プレイヤー自身の変数
 	// クォータニオン
 	DirectX::SimpleMath::Quaternion m_rotate;
+	float m_time;
 
 public:
 	PlayerHand();

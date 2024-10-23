@@ -18,7 +18,8 @@ using namespace DirectX::SimpleMath;
 PlayerHand::PlayerHand()
 	:
 	m_model{},
-	m_rotate{}
+	m_rotate{},
+	m_time{}
 {
 }
 
@@ -45,9 +46,16 @@ void PlayerHand::Initialize()
 /// <param name="timer">StepTimerを受け取る</param>
 void PlayerHand::Update(float timer)
 {
-	UNREFERENCED_PARAMETER(timer);
 	//腕を元に戻す
-	m_rotate = Quaternion::Identity;
+	if (m_rotate != Quaternion::Identity)
+	{
+		m_time += timer;
+		if (m_time >= 0.5f)
+		{
+			m_rotate = Quaternion::Identity;
+			m_time = 0.0f;
+		}
+	}
 }
 
 /// <summary>
@@ -66,5 +74,5 @@ void PlayerHand::Render(Matrix world)
 void PlayerHand::AttackMotion()
 {
 	// クォータニオンを使って攻撃時の腕の回転を設定
-	m_rotate = Quaternion::CreateFromAxisAngle(Vector3::UnitY, XMConvertToRadians(30.0f));
+	m_rotate = Quaternion::CreateFromAxisAngle(Vector3::UnitY, (XMConvertToRadians(30.0f)));
 }

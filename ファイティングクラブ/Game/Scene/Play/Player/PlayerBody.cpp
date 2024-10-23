@@ -127,6 +127,7 @@ void PlayerBody::Render()
 	rotation = Matrix::CreateFromQuaternion(m_rotate);
 	translation = Matrix::CreateTranslation(m_position);
 	m_world = size * rotation * m_rotateNormal * translation;
+
 	if (m_state != DEAD)
 	{
 		// ƒ‚ƒfƒ‹‚ð•`‰æ‚·‚é

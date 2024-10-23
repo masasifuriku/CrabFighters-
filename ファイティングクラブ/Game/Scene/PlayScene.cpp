@@ -8,7 +8,6 @@
 #include "FrameWork/Graphics.h"
 #include "FrameWork/Input.h"
 #include "Libraries/MyLib/TPS_Camera.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/GridFloor.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include <cassert>
@@ -29,7 +28,9 @@ PlayScene::PlayScene()
 	m_isChangeScene{},
 	m_player{},
 	m_enemy{},
-	m_stage{}
+	m_stage{},
+	m_Batch{},
+	m_Font{}
 {
 }
 
@@ -58,6 +59,10 @@ void PlayScene::Initialize()
 	m_enemy = std::make_unique<EnemyManager>(m_stage.get());
 	m_enemy->Initialize();
 
+	//バッチとフォントを持ってくる
+	m_Batch = Graphics::GetInstance()->GetSpriteBatch();
+	m_Font = Graphics::GetInstance()->GetFont();
+
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 }
@@ -78,6 +83,7 @@ void PlayScene::Update(float elapsedTime)
 	//敵の更新
 	m_enemy->Update(elapsedTime, IEnemy::Patrol, m_player->GetPos());
 
+	//敵のステート更新
 	UpdateCrabs();
 	UpdateSharks();
 	UpdateBirds();
@@ -102,13 +108,11 @@ void PlayScene::Render()
 {
 	//プレイヤーの描画
 	m_player->Render();
-
 	//敵の描画
 	m_enemy->Render();
-
 	//ステージの描画
 	m_stage->Render();
-
+	//デバッグ表示
 	DrawDebug();
 }
 
@@ -343,29 +347,38 @@ void PlayScene::UpdateBoss()
 //デバック情報をまとめておく
 void PlayScene::DrawDebug()
 {
+	//始める
+	m_Batch->Begin();
 	//// デバッグ情報を「DebugString」で表示する
-	//auto debugString = m_commonResources->GetDebugString();
-	//debugString->AddString("Play Scene");
-	////生存中のカニの情報
-	//for (auto& crab : m_enemy->GetActiveCrabs())
-	//{
-	//	debugString->AddString("Crab:%f", crab->GetHP());
-	//}
-	////生存中のサメの情報
-	//for (auto& shark : m_enemy->GetActiveSharks())
-	//{
-	//	debugString->AddString("Shark:%f", shark->GetHP());
-	//}	
-	////生存中の鳥の情報
-	//for (auto& bird : m_enemy->GetActiveBirds())
-	//{
-	//	debugString->AddString("Bird:%f", bird->GetHP());
-	//}
-	////ボスの情報
-	//auto& boss = m_enemy->GetBoss();
-	//debugString->AddString("Boss:%f", boss->GetHP());
-	////生存中の敵の総数
-	//debugString->AddString("ActiveEnemy:%d", m_enemy->GetActiveEnemyCount());
-	////プレイヤーのスタミナ
-	//debugString->AddString("Player/Stamina:%f", m_player->GetStamina());
+	m_Font->DrawString(m_Batch, L"Play Scene", Vector2(10, 10), Colors::Aqua);
+	//生存中のカニの情報
+	for (auto& crab : m_enemy->GetActiveCrabs())
+	{
+		std::wstring crabHP = L"Crab:" + std::to_wstring(crab->GetHP());
+		m_Font->DrawString(m_Batch, crabHP.c_str(), Vector2(10, 30), Colors::Aqua);
+	}
+	//生存中のサメの情報
+	for (auto& shark : m_enemy->GetActiveSharks())
+	{
+		std::wstring sharkHP = L"Shark:" + std::to_wstring(shark->GetHP());
+		m_Font->DrawString(m_Batch, sharkHP.c_str(), Vector2(10, 50), Colors::Aqua);
+	}	
+	//生存中の鳥の情報
+	for (auto& bird : m_enemy->GetActiveBirds())
+	{
+		std::wstring birdHP = L"Bird:" + std::to_wstring(bird->GetHP());
+		m_Font->DrawString(m_Batch, birdHP.c_str(), Vector2(10, 70), Colors::Aqua);
+	}
+	//ボスの情報
+	auto& boss = m_enemy->GetBoss();
+	std::wstring bossHP = L"Boss:" + std::to_wstring(boss->GetHP());
+	m_Font->DrawString(m_Batch, bossHP.c_str(), Vector2(10, 90), Colors::Aqua);
+	//生存中の敵の総数
+	std::wstring ActiveEnemy = L"ActiveEnemy:" + std::to_wstring(m_enemy->GetActiveEnemyCount());
+	m_Font->DrawString(m_Batch, ActiveEnemy.c_str(), Vector2(10, 110), Colors::Aqua);
+	//プレイヤーのスタミナ
+	std::wstring PSta = L"Player/Stamina:" + std::to_wstring(m_player->GetStamina());
+	m_Font->DrawString(m_Batch, PSta.c_str(), Vector2(10, 130), Colors::Aqua);
+	//終わり
+	m_Batch->End();
 }
