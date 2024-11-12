@@ -31,7 +31,7 @@ void Resources::LoadResource()
 	m_texture.emplace(L"title", Title);
 }
 
-//
+//指定されたテクスチャを探して渡す
 Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> Resources::GetTexture(const wchar_t* name)
 {
 	//テクスチャを検索

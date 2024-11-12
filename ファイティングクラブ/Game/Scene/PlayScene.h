@@ -4,6 +4,7 @@
 */
 #pragma once
 #include "Interface/IScene.h"
+#include "Framework/Collision.h"
 
 // 前方宣言
 class PlayerBody;
@@ -37,6 +38,9 @@ private:
 	DirectX::SpriteBatch* m_Batch;
 	//スプライトフォント
 	DirectX::SpriteFont* m_Font;
+
+	//当たり判定クラスインスタンス
+	Collision* m_collision;
 	
 	
 public:

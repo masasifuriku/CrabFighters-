@@ -6,7 +6,6 @@
 #include "PlayScene.h"
 #include "FrameWork/DeviceResources.h"
 #include "FrameWork/Graphics.h"
-#include "FrameWork/Input.h"
 #include "Libraries/MyLib/TPS_Camera.h"
 #include "Libraries/MyLib/GridFloor.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
@@ -30,7 +29,8 @@ PlayScene::PlayScene()
 	m_enemy{},
 	m_stage{},
 	m_Batch{},
-	m_Font{}
+	m_Font{},
+	m_collision{}
 {
 }
 
@@ -62,6 +62,12 @@ void PlayScene::Initialize()
 	//バッチとフォントを持ってくる
 	m_Batch = Graphics::GetInstance()->GetSpriteBatch();
 	m_Font = Graphics::GetInstance()->GetFont();
+
+	//当たり判定インスタンスを持ってくる
+	m_collision = Collision::GetInstance();
+	//当たり判定にオブジェクトを渡す
+	m_collision->SetPlayer(m_player.get());
+	m_collision->SetEnemy(m_enemy.get());
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
@@ -154,14 +160,14 @@ void PlayScene::UpdateCrabs()
 		float dz = Ppos.z - Cpos.z;
 		float distance = std::sqrt(dx * dx + dy * dy + dz * dz);
 		//敵の追跡範囲
-		float SearchRande = 5.0f;
+		float SearchRange = 5.0f;
 		//ステートをパトロールにする
-		if (distance >= SearchRande)
+		if (distance >= SearchRange)
 		{
 			crab->SetEnemyState(IEnemy::EnemyState::Patrol);
 		}
 		//ステートを追跡にする
-		else if (distance <= SearchRande)
+		else if (distance <= SearchRange)
 		{
 			crab->SetEnemyState(IEnemy::EnemyState::Chase);
 		}
@@ -209,14 +215,14 @@ void PlayScene::UpdateSharks()
 		float dz = Ppos.z - Spos.z;
 		float distance = std::sqrt(dx * dx + dy * dy + dz * dz);
 		//敵の追跡範囲
-		float SearchRande = 5.0f;
+		float SearchRange = 5.0f;
 		//ステートをパトロールにする
-		if (distance >= SearchRande)
+		if (distance >= SearchRange)
 		{
 			shark->SetEnemyState(IEnemy::EnemyState::Patrol);
 		}
 		//ステートを追跡にする
-		else if (distance <= SearchRande)
+		else if (distance <= SearchRange)
 		{
 			shark->SetEnemyState(IEnemy::EnemyState::Chase);
 		}
@@ -260,14 +266,14 @@ void PlayScene::UpdateBirds()
 		float dz = Ppos.z - Bpos.z;
 		float distance = std::sqrt(dx * dx + dy * dy + dz * dz);
 		//敵の追跡範囲
-		float SearchRande = 5.0f;
+		float SearchRange = 5.0f;
 		//ステートをパトロールにする
-		if (distance >= SearchRande)
+		if (distance >= SearchRange)
 		{
 			bird->SetEnemyState(IEnemy::EnemyState::Patrol);
 		}
 		//ステートを追跡にする
-		else if (distance <= SearchRande)
+		else if (distance <= SearchRange)
 		{
 			bird->SetEnemyState(IEnemy::EnemyState::Chase);
 		}

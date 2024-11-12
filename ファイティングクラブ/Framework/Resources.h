@@ -9,7 +9,7 @@
 class Resources
 {
 public:
-	//
+	//指定されたテクスチャを探して渡す
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> GetTexture(const wchar_t* name);
 public:
 	Resources(Resources&&) = default;
@@ -31,8 +31,7 @@ private:
 private:
 	// リソース
 	static std::unique_ptr<Resources> m_resources;
-
-	//
+	//テクスチャ格納変数
 	std::unordered_map<const wchar_t*, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> m_texture;
 };
 
