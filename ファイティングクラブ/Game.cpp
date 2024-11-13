@@ -17,7 +17,8 @@ Game::Game() noexcept(false)
     :
     m_deviceResources{},
     m_timer{},
-    m_sceneManager{}
+    m_sceneManager{},
+    m_fullScreen{}
 {
     //グラフィックスのインスタンスを取得
     m_graphics = Graphics::GetInstance();
@@ -58,10 +59,6 @@ void Game::Initialize(HWND window, int width, int height)
     m_input->Initialize(window);
     //リソースの読み恋
     m_resource->LoadResource();
-
-    // デバイスとコンテキストを取得する
-    auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
-    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
     //// デバッグ文字列を作成する
     //m_debugString = std::make_unique<mylib::DebugString>(

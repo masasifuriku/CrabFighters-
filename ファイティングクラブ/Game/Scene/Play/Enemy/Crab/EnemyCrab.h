@@ -10,6 +10,11 @@
 #include "Interface/IEnemy.h"
 #include "Libraries/EdeLib/ModelManager.h"
 
+class CrabPatrol;
+class CrabChase;
+class CrabAttack;
+class CrabEscape;
+
 class EnemyCrab :public IEnemy
 {
 private:
@@ -20,8 +25,6 @@ private:
 
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
-	// 速さ
-	DirectX::SimpleMath::Vector3 m_velocity;
 	//回転
 	// クォータニオン
 	DirectX::SimpleMath::Quaternion m_rotate;
@@ -31,23 +34,21 @@ private:
 	float m_angle;
 	//速度
 	static constexpr float SPEED = 0.1f;
-	// 現在のゴール番号
-	unsigned int m_currentGoalNo;
-	// ゴール配列
-	std::vector<DirectX::SimpleMath::Vector3> m_goals;
-	// 発見フラグ
-	bool m_isInside;
 	//HP
 	float m_health;
-	//カウント
-	float m_count;
 
-	std::vector<std::vector<DirectX::SimpleMath::Vector3>> m_goals2;
+	//ステート
+	std::unique_ptr<CrabPatrol> m_patrol;
+	std::unique_ptr<CrabChase> m_chase;
+	std::unique_ptr<CrabAttack> m_attack;
+	std::unique_ptr<CrabEscape> m_escape;
+
+	//std::vector<std::vector<DirectX::SimpleMath::Vector3>> m_goals2;
 
 
 public:
 	EnemyCrab();
-	~EnemyCrab();
+	~EnemyCrab()override;
 
 	void Initialize(
 		IEnemy::EnemyState state, 
@@ -57,8 +58,14 @@ public:
 		DirectX::SimpleMath::Vector3 pos,
 		DirectX::SimpleMath::Matrix normal);
 public:
-	//現在の位置の取得
+	//現在の位置の渡す
 	DirectX::SimpleMath::Vector3 GetPos() const override{ return m_position; }
+	//位置を受け取る
+	void SetPos(DirectX::SimpleMath::Vector3 pos)override { m_position += pos; }
+	//現在の角度を渡す
+	float GetAngle()const override { return m_angle; }
+	//角度を受け取る
+	void SetAngle(float angle)override { m_angle += angle; }
 	//状態の設定
 	void SetEnemyState(EnemyState state) override { m_state = state; }
 	//敵が生存中か
@@ -74,12 +81,4 @@ public:
 private:
 	//ステート管理
 	void UpdateState(float time,DirectX::SimpleMath::Vector3 player);
-	//探索
-	void CrabPatrol(float timer);
-	//追跡
-	void CrabChase(DirectX::SimpleMath::Vector3 pos);
-	//戦闘
-	void CrabBattle();
-	//逃走
-	void CrabEscape(DirectX::SimpleMath::Vector3 pos);
 };

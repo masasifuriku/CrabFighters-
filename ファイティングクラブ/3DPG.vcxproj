@@ -188,8 +188,13 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\Scene\PlayScene.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Bird\EnemyBird.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Bird\States\BirdPatrol.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Boss\EnemyBoss.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Crab\EnemyCrab.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabAttack.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabChase.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabEscape.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabPatrol.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\EnemyManager.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Shark\EnemyShark.h" />
     <ClInclude Include="Game\Scene\Play\Player\PlayerHand.h" />
@@ -202,7 +207,6 @@
     <ClInclude Include="Interface\IEnemy.h" />
     <ClInclude Include="Interface\IScene.h" />
     <ClInclude Include="Libraries\EdeLib\ModelManager.h" />
-    <ClInclude Include="Libraries\EdeLib\TextureManager.h" />
     <ClInclude Include="Libraries\Microsoft\DebugDraw.h" />
     <ClInclude Include="Libraries\MyLib\CollisionMesh.h" />
     <ClInclude Include="Libraries\MyLib\GridFloor.h" />
@@ -221,8 +225,13 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\Scene\PlayScene.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Bird\EnemyBird.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Bird\States\BirdPatrol.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Boss\EnemyBoss.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Crab\EnemyCrab.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabAttack.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabChase.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabEscape.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabPatrol.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\EnemyManager.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Shark\EnemyShark.cpp" />
     <ClCompile Include="Game\Scene\Play\Player\PlayerHand.cpp" />
@@ -232,7 +241,6 @@
     <ClCompile Include="Game\Scene\SceneManager.cpp" />
     <ClCompile Include="Game\Scene\TitleScene.cpp" />
     <ClCompile Include="Libraries\EdeLib\ModelManager.cpp" />
-    <ClCompile Include="Libraries\EdeLib\TextureManager.cpp" />
     <ClCompile Include="Libraries\Microsoft\DebugDraw.cpp" />
     <ClCompile Include="Libraries\MyLib\CollisionMesh.cpp" />
     <ClCompile Include="Libraries\MyLib\GridFloor.cpp" />

@@ -46,6 +46,12 @@ public:
 public:
 	//Œ»İ‚ÌˆÊ’u‚Ìæ“¾
 	DirectX::SimpleMath::Vector3 GetPos() const override{ return m_position; }
+	//ˆÊ’u‚ğó‚¯æ‚é
+	void SetPos(DirectX::SimpleMath::Vector3 pos)override { m_position = pos; }
+	//Œ»İ‚ÌŠp“x‚ğ“n‚·
+	float GetAngle()const override { return m_angle; }
+	//Šp“x‚ğó‚¯æ‚é
+	void SetAngle(float angle)override { m_angle = angle; }
 	//ó‘Ô‚Ìİ’è
 	void SetEnemyState(EnemyState state) override { m_state = state; }
 	//“G‚ª¶‘¶’†‚©

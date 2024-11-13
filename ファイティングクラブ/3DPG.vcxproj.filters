@@ -144,15 +144,17 @@
     <ClInclude Include="Game\Scene\Play\Stage\Stage.h">
       <Filter>Game\Scene\Play\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Libraries\EdeLib\TextureManager.h">
-      <Filter>Libraries\EdeLib</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Scene\Play\Enemy\Boss\EnemyBoss.h" />
     <ClInclude Include="Framework\DeviceResources.h" />
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\Input.h" />
     <ClInclude Include="Framework\Resources.h" />
     <ClInclude Include="Framework\Collision.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Bird\States\BirdPatrol.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabPatrol.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabChase.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabAttack.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabEscape.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -206,15 +208,17 @@
     <ClCompile Include="Game\Scene\Play\Stage\Stage.cpp">
       <Filter>Game\Scene\Play\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Libraries\EdeLib\TextureManager.cpp">
-      <Filter>Libraries\EdeLib</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Scene\Play\Enemy\Boss\EnemyBoss.cpp" />
     <ClCompile Include="Framework\DeviceResources.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\Input.cpp" />
     <ClCompile Include="Framework\Resources.cpp" />
     <ClCompile Include="Framework\Collision.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Bird\States\BirdPatrol.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabPatrol.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabChase.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabAttack.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabEscape.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

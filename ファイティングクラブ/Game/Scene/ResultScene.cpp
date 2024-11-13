@@ -77,9 +77,6 @@ void ResultScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void ResultScene::Render()
 {
-	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = Graphics::GetInstance()->GetCommonStates();
-
 	// ワールド行列を更新する
 	Matrix world;
 

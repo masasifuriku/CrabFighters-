@@ -41,9 +41,6 @@ TitleScene::~TitleScene()
 //---------------------------------------------------------
 void TitleScene::Initialize()
 {
-	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
-	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-
 	// スプライトバッチを作成する
 	m_spriteBatch = Graphics::GetInstance()->GetSpriteBatch();
 

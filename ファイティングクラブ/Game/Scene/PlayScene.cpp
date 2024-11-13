@@ -186,10 +186,7 @@ void PlayScene::UpdateCrabs()
 			crab->SetEnemyState(IEnemy::EnemyState::DEAD);
 		}
 		//プレイヤーからカニへの攻撃
-		if (m_player->GetBoundingSphere(
-			m_player->GetPos()).
-			Intersects(
-				crab->GetBoundingSphere(crab->GetPos())))
+		if (Collision::GetInstance()->CheckHitPlayerToCrab())
 		{
 			//プレイヤーの状態が攻撃なら敵にダメージが入る
 			if (m_player->GetState() == PlayerBody::ATTACK)
@@ -237,10 +234,7 @@ void PlayScene::UpdateSharks()
 			shark->SetEnemyState(IEnemy::EnemyState::DEAD);
 		}
 		//プレイヤーからサメへの攻撃
-		if (m_player->GetBoundingSphere(
-			m_player->GetPos()).
-			Intersects(
-				shark->GetBoundingSphere(shark->GetPos())))
+		if (Collision::GetInstance()->CheckHitPlayerToShark())
 		{
 			//プレイヤーの状態が攻撃なら敵にダメージが入る
 			if (m_player->GetState() == PlayerBody::ATTACK)
@@ -288,9 +282,7 @@ void PlayScene::UpdateBirds()
 			bird->SetEnemyState(IEnemy::EnemyState::DEAD);
 		}
 		//プレイヤーから鳥への攻撃
-		if (m_player->GetBoundingSphere(m_player->GetPos()).
-			Intersects(
-				bird->GetBoundingSphere(bird->GetPos())))
+		if (Collision::GetInstance()->CheckHitPlayerToBird())
 		{
 			//プレイヤーの状態が攻撃なら敵にダメージが入る
 			if (m_player->GetState() == PlayerBody::ATTACK)
@@ -338,9 +330,7 @@ void PlayScene::UpdateBoss()
 		boss->SetEnemyState(IEnemy::EnemyState::DEAD);
 	}
 	//プレイヤーから鳥への攻撃
-	if (m_player->GetBoundingSphere(m_player->GetPos()).
-		Intersects(
-			boss->GetBoundingSphere(boss->GetPos())))
+	if (Collision::GetInstance()->CheckHitPlayerToBoss())
 	{
 		//プレイヤーの状態が攻撃なら敵にダメージが入る
 		if (m_player->GetState() == PlayerBody::ATTACK)

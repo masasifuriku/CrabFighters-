@@ -19,8 +19,14 @@ public:
 	};
 
 public:
-	//Œ»İ‚ÌˆÊ’u‚Ìæ“¾
+	//Œ»İ‚ÌˆÊ’u‚Ì“n‚·
 	virtual DirectX::SimpleMath::Vector3 GetPos()const = 0;
+	//ˆÊ’u‚ğó‚¯æ‚é
+	virtual void SetPos(DirectX::SimpleMath::Vector3 pos) = 0;
+	//Œ»İ‚ÌŠp“x‚ğ“n‚·
+	virtual float GetAngle()const = 0;
+	//Šp“x‚ğó‚¯æ‚é
+	virtual void SetAngle(float angle) = 0;
 	//“G‚Ìó‘Ô‚ğİ’è‚·‚é
 	virtual void SetEnemyState(EnemyState state) = 0;
 	// “G‚ª¶‘¶’†‚©
