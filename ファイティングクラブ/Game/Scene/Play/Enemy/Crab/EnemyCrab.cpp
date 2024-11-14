@@ -63,7 +63,7 @@ void EnemyCrab::Initialize(
 	m_health = 100.0f;
 	//ステート
 	m_patrol = std::make_unique<CrabPatrol>(this);
-	m_chase = std::make_unique<CrabChase>(this);
+	m_chase  = std::make_unique<CrabChase>(this);
 	m_attack = std::make_unique<CrabAttack>(this);
 	m_escape = std::make_unique<CrabEscape>(this);
 

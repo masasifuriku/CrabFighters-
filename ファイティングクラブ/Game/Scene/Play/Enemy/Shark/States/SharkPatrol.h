@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------
-// File: BirdPatrol.h
+// File: SharkPatrol.h
 //
 // 敵ステートクラス
 //
@@ -8,12 +8,12 @@
 #pragma once
 #include "StepTimer.h"
 
-class EnemyBird;
+class EnemyShark;
 
-class BirdPatrol
+class SharkPatrol
 {
 private:
-	EnemyBird* m_bird;
+	EnemyShark* m_shark;
 
 	// 現在のゴール番号
 	unsigned int m_currentGoalNo;
@@ -25,8 +25,8 @@ private:
 	static constexpr float SPEED = 0.1f;
 
 public:
-	BirdPatrol(EnemyBird* bird);
-	~BirdPatrol();
+	SharkPatrol(EnemyShark* shark);
+	~SharkPatrol();
 
 	void Update();
 };

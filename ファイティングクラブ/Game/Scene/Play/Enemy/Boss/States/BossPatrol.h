@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------
-// File: BirdPatrol.h
+// File: BossPatrol.h
 //
 // 敵ステートクラス
 //
@@ -8,12 +8,12 @@
 #pragma once
 #include "StepTimer.h"
 
-class EnemyBird;
+class EnemyBoss;
 
-class BirdPatrol
+class BossPatrol
 {
 private:
-	EnemyBird* m_bird;
+	EnemyBoss* m_boss;
 
 	// 現在のゴール番号
 	unsigned int m_currentGoalNo;
@@ -25,8 +25,8 @@ private:
 	static constexpr float SPEED = 0.1f;
 
 public:
-	BirdPatrol(EnemyBird* bird);
-	~BirdPatrol();
+	BossPatrol(EnemyBoss* boss);
+	~BossPatrol();
 
 	void Update();
 };

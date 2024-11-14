@@ -150,11 +150,22 @@
     <ClInclude Include="Framework\Input.h" />
     <ClInclude Include="Framework\Resources.h" />
     <ClInclude Include="Framework\Collision.h" />
-    <ClInclude Include="Game\Scene\Play\Enemy\Bird\States\BirdPatrol.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabPatrol.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabChase.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabAttack.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabEscape.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Boss\States\BossAttack.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Boss\States\BossChase.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Boss\States\BossEscape.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Boss\States\BossPatrol.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Bird\States\BirdAttack.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Bird\States\BirdChase.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Bird\States\BirdEscape.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Bird\States\BirdPatrol.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Shark\States\SharkAttack.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Shark\States\SharkChase.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Shark\States\SharkEscape.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Shark\States\SharkPatrol.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -214,11 +225,22 @@
     <ClCompile Include="Framework\Input.cpp" />
     <ClCompile Include="Framework\Resources.cpp" />
     <ClCompile Include="Framework\Collision.cpp" />
-    <ClCompile Include="Game\Scene\Play\Enemy\Bird\States\BirdPatrol.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabPatrol.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabChase.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabAttack.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabEscape.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Boss\States\BossAttack.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Boss\States\BossChase.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Boss\States\BossEscape.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Boss\States\BossPatrol.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Bird\States\BirdAttack.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Bird\States\BirdChase.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Bird\States\BirdEscape.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Bird\States\BirdPatrol.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Shark\States\SharkAttack.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Shark\States\SharkChase.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Shark\States\SharkEscape.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Shark\States\SharkPatrol.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

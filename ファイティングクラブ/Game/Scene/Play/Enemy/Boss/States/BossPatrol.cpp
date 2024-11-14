@@ -1,13 +1,13 @@
 //--------------------------------------------------------------------------------------
-// File: BirdPatrol.cpp
+// File: BossPatrol.cpp
 //
 // 敵クラス
 //
 //-------------------------------------------------------------------------------------
 
 #include "pch.h"
-#include "BirdPatrol.h"
-#include "Game/Scene/Play/Enemy/Bird/EnemyBird.h"
+#include "BossPatrol.h"
+#include "Game/Scene/Play/Enemy/Boss/EnemyBoss.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -15,9 +15,9 @@ using namespace DirectX::SimpleMath;
 /// <summary>
 /// コンストラクタ
 /// </summary>
-BirdPatrol::BirdPatrol(EnemyBird* bird)
+BossPatrol::BossPatrol(EnemyBoss* boss)
 	:
-	m_bird(bird),
+	m_boss(boss),
 	m_currentGoalNo{ 0 },
 	m_isInside{ false }
 {
@@ -31,7 +31,7 @@ BirdPatrol::BirdPatrol(EnemyBird* bird)
 /// <summary>
 /// デストラクタ
 /// </summary>
-BirdPatrol::~BirdPatrol()
+BossPatrol::~BossPatrol()
 {
 }
 
@@ -39,19 +39,19 @@ BirdPatrol::~BirdPatrol()
 /// 更新関数
 /// </summary>
 /// <param name="timer">StepTimerを受け取る</param>
-void BirdPatrol::Update()
+void BossPatrol::Update()
 {
 	// 進行方向ベクトル
-	Vector3 heading = Vector3::Transform(Vector3::Forward * 0.35, Matrix::CreateRotationY(m_bird->GetAngle()));
+	Vector3 heading = Vector3::Transform(Vector3::Forward * 0.35, Matrix::CreateRotationY(m_boss->GetAngle()));
 
 	// ゴールへ向かうベクトル
-	Vector3 toGoal = m_goals[m_currentGoalNo] - m_bird->GetPos();
+	Vector3 toGoal = m_goals[m_currentGoalNo] - m_boss->GetPos();
 
 	// ターゲットとの距離が近すぎなければ
 	if (toGoal.LengthSquared() > SPEED * SPEED)
 	{
 		// 移動する
-		m_bird->SetPos(heading * SPEED);
+		m_boss->SetPos(heading * SPEED);
 
 		//ターゲットの方向へ徐々に回転する
 		// 「進行方向ベクトル」と「ターゲットの方向」からcosθを計算する
@@ -72,7 +72,7 @@ void BirdPatrol::Update()
 			theta *= (-1.0f);
 		}
 		// 角度を更新する
-		m_bird->SetAngle(theta);
+		m_boss->SetAngle(theta);
 		// ゴールに達したら、ゴール情報を更新する
 		if (m_isInside == false && toGoal.Length() < 0.5f)
 		{

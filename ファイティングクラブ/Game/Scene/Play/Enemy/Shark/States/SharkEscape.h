@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------
-// File: BirdPatrol.h
+// File: SharkEscape.h
 //
 // 敵ステートクラス
 //
@@ -8,25 +8,19 @@
 #pragma once
 #include "StepTimer.h"
 
-class EnemyBird;
+class EnemyShark;
 
-class BirdPatrol
+class SharkEscape
 {
 private:
-	EnemyBird* m_bird;
+	EnemyShark* m_shark;
 
-	// 現在のゴール番号
-	unsigned int m_currentGoalNo;
-	// ゴール配列
-	std::vector<DirectX::SimpleMath::Vector3> m_goals;
-	// 発見フラグ
-	bool m_isInside;
 	//速度
 	static constexpr float SPEED = 0.1f;
 
 public:
-	BirdPatrol(EnemyBird* bird);
-	~BirdPatrol();
+	SharkEscape(EnemyShark* shark);
+	~SharkEscape();
 
-	void Update();
+	void Update(DirectX::SimpleMath::Vector3 Ppos);
 };
