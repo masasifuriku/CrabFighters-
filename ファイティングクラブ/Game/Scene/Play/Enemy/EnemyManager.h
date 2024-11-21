@@ -18,7 +18,7 @@
 #include <vector>
 
 class Stage;
-
+class PlayerBody;
 
 // クラスの定義 ===============================================================
 /**
@@ -61,11 +61,13 @@ private:
 
 	//ステージのポインタ
 	Stage* m_stage;
+	//プレイヤーのポインタ
+	PlayerBody* m_player;
 
 // メンバ関数の宣言
 public:
 	// コンストラクタ
-	EnemyManager(Stage* stage);
+	EnemyManager(Stage* stage,PlayerBody* player);
 
 	// デストラクタ
 	~EnemyManager();
@@ -76,7 +78,7 @@ public:
 	void Initialize();
 
 	// 更新処理
-	void Update(float timer, IEnemy::EnemyState state, DirectX::SimpleMath::Vector3 Ppos);
+	void Update(float timer, IEnemy::EnemyState state);
 
 	// 描画処理
 	void Render();

@@ -10,7 +10,10 @@
 #include "Interface/IEnemy.h"
 #include "Libraries/EdeLib/ModelManager.h"
 
-
+class BirdPatrol;
+class BirdChase;
+class BirdAttack;
+class BirdEscape;
 
 class EnemyBird :public IEnemy
 {
@@ -34,6 +37,12 @@ private:
 	//HP
 	float m_health;
 
+	//ステート
+	std::unique_ptr<BirdPatrol> m_patrol;
+	std::unique_ptr<BirdChase> m_chase;
+	std::unique_ptr<BirdAttack> m_attack;
+	std::unique_ptr<BirdEscape> m_escape;
+
 public:
 	EnemyBird();
 	~EnemyBird();
@@ -41,7 +50,7 @@ public:
 	void Initialize(
 		IEnemy::EnemyState state,
 		DirectX::SimpleMath::Vector3 position);
-	void Update(float timer, DirectX::SimpleMath::Vector3 Ppos);
+	void Update(float timer);
 	void Render(
 		DirectX::SimpleMath::Vector3 pos,
 		DirectX::SimpleMath::Matrix normal);
@@ -65,4 +74,9 @@ public:
 		DirectX::SimpleMath::Vector3 center) override;
 
 	float GetHP() const override{ return m_health; }
+
+private:
+	//ステート管理
+	void UpdateState(DirectX::SimpleMath::Vector3 player);
+
 };

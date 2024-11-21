@@ -7,6 +7,11 @@
 
 #include "pch.h"
 #include "EnemyBoss.h"
+#include "Game/Scene/Play/Player/PlayerBody.h"
+#include "Game/Scene/Play/Enemy/Boss/States/BossPatrol.h"
+#include "Game/Scene/Play/Enemy/Boss/States/BossChase.h"
+#include "Game/Scene/Play/Enemy/Boss/States/BossAttack.h"
+#include "Game/Scene/Play/Enemy/Boss/States/BossEscape.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -14,7 +19,7 @@ using namespace DirectX::SimpleMath;
 /// <summary>
 /// コンストラクタ
 /// </summary>
-EnemyBoss::EnemyBoss()
+EnemyBoss::EnemyBoss(PlayerBody* player)
 	:
 	m_model{},
 	m_state{ DEAD }, 
@@ -23,7 +28,12 @@ EnemyBoss::EnemyBoss()
 	m_rotate{},
 	m_world{},
 	m_health{},
-	m_angle{}
+	m_angle{},
+	m_player{ player },
+	m_patrol{},
+	m_chase{},
+	m_attack{},
+	m_escape{}
 {
 }
 
@@ -55,15 +65,22 @@ void EnemyBoss::Initialize(
 	m_health = 300.0f;
 	//角度
 	m_angle = 0.0f;
+
+	//ステート
+	m_patrol = std::make_unique<BossPatrol>(this);
+	m_chase  = std::make_unique<BossChase>(this);
+	m_attack = std::make_unique<BossAttack>(this);
+	m_escape = std::make_unique<BossEscape>(this);
 }
 
 /// <summary>
 /// 更新関数
 /// </summary>
 /// <param name="timer">StepTimerを受け取る</param>
-void EnemyBoss::Update(float timer,Vector3 Ppos)
+void EnemyBoss::Update(float timer)
 {
-	UpdateState(timer,Ppos);
+	UNREFERENCED_PARAMETER(timer);
+	UpdateState();
 }
 
 /// <summary>
@@ -115,42 +132,25 @@ DirectX::BoundingSphere EnemyBoss::GetBoundingSphere(Vector3 center)
 }
 
 //ステートの更新
-void EnemyBoss::UpdateState(float time, Vector3 player)
+void EnemyBoss::UpdateState()
 {
 	switch (m_state)
 	{
 		case Patrol:
-			BossPatrol(time);
+			m_patrol->Update();
 			break;
 		case Chase:
-			BossChase(player);
+			m_chase->Update(m_player->GetPos());
 			break;
 		case Battle:
-			BossBattle();
+			m_attack->Update();
 			break;
 		case Escape:
-			BossEscape(player);
+			m_escape->Update(m_player->GetPos());
 			break;
 		case DEAD:
 			break;
 		default:
 			break;
 	}
-}
-
-//探索行動
-void EnemyBoss::BossPatrol(float timer)
-{
-}
-//追跡行動
-void EnemyBoss::BossChase(Vector3 pos)
-{
-}
-//戦闘行動
-void EnemyBoss::BossBattle()
-{
-}
-//逃走行動
-void EnemyBoss::BossEscape(Vector3 pos)
-{
 }

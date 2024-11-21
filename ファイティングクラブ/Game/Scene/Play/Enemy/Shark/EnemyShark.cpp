@@ -7,6 +7,11 @@
 
 #include "pch.h"
 #include "EnemyShark.h"
+#include "Game/Scene/Play/Player/PlayerBody.h"
+#include "Game/Scene/Play/Enemy/Shark/States/SharkPatrol.h"
+#include "Game/Scene/Play/Enemy/Shark/States/SharkChase.h"
+#include "Game/Scene/Play/Enemy/Shark/States/SharkAttack.h"
+#include "Game/Scene/Play/Enemy/Shark/States/SharkEscape.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -14,7 +19,7 @@ using namespace DirectX::SimpleMath;
 /// <summary>
 /// コンストラクタ
 /// </summary>
-EnemyShark::EnemyShark()
+EnemyShark::EnemyShark(PlayerBody* player)
 	:
 	m_model{},
 	m_state{ DEAD },
@@ -23,7 +28,12 @@ EnemyShark::EnemyShark()
 	m_rotate{},
 	m_world{},
 	m_angle{},
-	m_health{}
+	m_health{},
+	m_player{ player },
+	m_patrol{},
+	m_chase{},
+	m_attack{},
+	m_escape{}
 {
 }
 
@@ -55,14 +65,21 @@ void EnemyShark::Initialize(
 	m_angle = 0.0f;
 	//HP
 	m_health = 100.0f;
+
+	//ステート
+	m_patrol = std::make_unique<SharkPatrol>(this);
+	m_chase  = std::make_unique<SharkChase>(this);
+	m_attack = std::make_unique<SharkAttack>(this);
+	m_escape = std::make_unique<SharkEscape>(this);
 }
 
 /// <summary>
 /// 更新関数
 /// </summary>
 /// <param name="timer">StepTimerを受け取る</param>
-void EnemyShark::Update(float timer, Vector3 Ppos)
+void EnemyShark::Update(float timer)
 {
+	UNREFERENCED_PARAMETER(timer);
 	//m_position = m_velocity;
 	if (m_health <= 0.0f)
 	{
@@ -118,4 +135,28 @@ DirectX::BoundingSphere EnemyShark::GetBoundingSphere(Vector3 center)
 	sphere.Center = center;
 	sphere.Radius = 0.6f;
 	return sphere;
+}
+
+//ステートの更新
+void EnemyShark::UpdateState()
+{
+	switch (m_state)
+	{
+		case Patrol:
+			m_patrol->Update();
+			break;
+		case Chase:
+			m_chase->Update(m_player->GetPos());
+			break;
+		case Battle:
+			m_attack->Update();
+			break;
+		case Escape:
+			m_escape->Update(m_player->GetPos());
+			break;
+		case DEAD:
+			break;
+		default:
+			break;
+	}
 }

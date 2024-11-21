@@ -10,6 +10,13 @@
 #include "Interface/IEnemy.h"
 #include "Libraries/EdeLib/ModelManager.h"
 
+class PlayerBody;
+
+class BossPatrol;
+class BossChase;
+class BossAttack;
+class BossEscape;
+
 class EnemyBoss :public IEnemy
 {
 private:
@@ -32,14 +39,23 @@ private:
 	//角度
 	float m_angle;
 
+	//プレイヤー
+	PlayerBody* m_player;
+
+	//ステート
+	std::unique_ptr<BossPatrol> m_patrol;
+	std::unique_ptr<BossChase> m_chase;
+	std::unique_ptr<BossAttack> m_attack;
+	std::unique_ptr<BossEscape> m_escape;
+
 public:
-	EnemyBoss();
+	EnemyBoss(PlayerBody* player);
 	~EnemyBoss();
 
 	void Initialize(
 		IEnemy::EnemyState state, 
 		DirectX::SimpleMath::Vector3 position);
-	void Update(float timer, DirectX::SimpleMath::Vector3 Ppos);
+	void Update(float timer);
 	void Render(
 		DirectX::SimpleMath::Vector3 pos,
 		DirectX::SimpleMath::Matrix normal);
@@ -66,13 +82,5 @@ public:
 
 private:
 	//ステート管理
-	void UpdateState(float time,DirectX::SimpleMath::Vector3 player);
-	//探索
-	void BossPatrol(float timer);
-	//追跡
-	void BossChase(DirectX::SimpleMath::Vector3 pos);
-	//戦闘
-	void BossBattle();
-	//逃走
-	void BossEscape(DirectX::SimpleMath::Vector3 pos);
+	void UpdateState();
 };

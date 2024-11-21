@@ -7,6 +7,7 @@
 
 #include "pch.h"
 #include "EnemyCrab.h"
+#include "Game/Scene/Play/Player/PlayerBody.h"
 #include "Game/Scene/Play/Enemy/Crab/States/CrabPatrol.h"
 #include "Game/Scene/Play/Enemy/Crab/States/CrabChase.h"
 #include "Game/Scene/Play/Enemy/Crab/States/CrabAttack.h"
@@ -19,7 +20,7 @@ using namespace DirectX::SimpleMath;
 /// <summary>
 /// コンストラクタ
 /// </summary>
-EnemyCrab::EnemyCrab()
+EnemyCrab::EnemyCrab(PlayerBody* player)
 	:
 	m_model{},
 	m_state{ DEAD }, 
@@ -28,6 +29,7 @@ EnemyCrab::EnemyCrab()
 	m_world{},
 	m_angle{},
 	m_health{},
+	m_player{ player },
 	m_patrol{},
 	m_chase{},
 	m_attack{},
@@ -82,9 +84,10 @@ void EnemyCrab::Initialize(
 /// 更新関数
 /// </summary>
 /// <param name="timer">StepTimerを受け取る</param>
-void EnemyCrab::Update(float timer,Vector3 Ppos)
+void EnemyCrab::Update(float timer)
 {
-	UpdateState(timer,Ppos);
+	UNREFERENCED_PARAMETER(timer);
+	UpdateState();
 }
 
 /// <summary>
@@ -135,7 +138,7 @@ DirectX::BoundingSphere EnemyCrab::GetBoundingSphere(Vector3 center)
 }
 
 //ステートの更新
-void EnemyCrab::UpdateState(float time, Vector3 player)
+void EnemyCrab::UpdateState()
 {
 	switch (m_state)
 	{
@@ -143,13 +146,13 @@ void EnemyCrab::UpdateState(float time, Vector3 player)
 			m_patrol->Update();
 			break;
 		case Chase:
-			m_chase->Update(player);
+			m_chase->Update(m_player->GetPos());
 			break;
 		case Battle:
 			m_attack->Update();
 			break;
 		case Escape:
-			m_escape->Update(player);
+			m_escape->Update(m_player->GetPos());
 			break;
 		case DEAD:
 			break;

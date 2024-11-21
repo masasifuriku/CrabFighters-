@@ -56,7 +56,7 @@ void PlayScene::Initialize()
 	m_player = std::make_unique<PlayerBody>(m_stage.get());
 	m_player->Initialize();
 	//敵の生成
-	m_enemy = std::make_unique<EnemyManager>(m_stage.get());
+	m_enemy = std::make_unique<EnemyManager>(m_stage.get(), m_player.get());
 	m_enemy->Initialize();
 
 	//バッチとフォントを持ってくる
@@ -87,7 +87,7 @@ void PlayScene::Update(float elapsedTime)
 	m_player->Update(elapsedTime);
 
 	//敵の更新
-	m_enemy->Update(elapsedTime, IEnemy::Patrol, m_player->GetPos());
+	m_enemy->Update(elapsedTime, IEnemy::Patrol);
 
 	//敵のステート更新
 	UpdateCrabs();
@@ -170,6 +170,11 @@ void PlayScene::UpdateCrabs()
 		else if (distance <= SearchRange)
 		{
 			crab->SetEnemyState(IEnemy::EnemyState::Chase);
+		}
+		//ステートを攻撃する
+		if (Collision::GetInstance()->CheckHitCrabrToPlayer())
+		{
+			crab->SetEnemyState(IEnemy::EnemyState::Battle);
 		}
 		//ステートを逃走にする
 		if (crab->GetHP() <= 20.0f)

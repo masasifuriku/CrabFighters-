@@ -7,6 +7,10 @@
 
 #include "pch.h"
 #include "EnemyBird.h"
+#include "Game/Scene/Play/Enemy/Bird/States/BirdPatrol.h"
+#include "Game/Scene/Play/Enemy/Bird/States/BirdChase.h"
+#include "Game/Scene/Play/Enemy/Bird/States/BirdAttack.h"
+#include "Game/Scene/Play/Enemy/Bird/States/BirdEscape.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -23,7 +27,11 @@ EnemyBird::EnemyBird()
 	m_rotate{},
 	m_world{},
 	m_angle{},
-	m_health{}
+	m_health{},
+	m_patrol{},
+	m_chase{},
+	m_attack{},
+	m_escape{}
 {
 }
 
@@ -55,14 +63,21 @@ void EnemyBird::Initialize(
 	m_angle = 0.0f;
 	//HP
 	m_health = 100.0f;
+
+	//ステート
+	m_patrol = std::make_unique<BirdPatrol>(this);
+	m_chase  = std::make_unique<BirdChase>(this);
+	m_attack = std::make_unique<BirdAttack>(this);
+	m_escape = std::make_unique<BirdEscape>(this);
 }
 
 /// <summary>
 /// 更新関数
 /// </summary>
 /// <param name="timer">StepTimerを受け取る</param>
-void EnemyBird::Update(float timer,Vector3 Ppos)
+void EnemyBird::Update(float timer)
 {
+	UNREFERENCED_PARAMETER(timer);
 	//m_position = m_velocity;
 	if (m_health <= 0.0f)
 	{
@@ -117,4 +132,28 @@ DirectX::BoundingSphere EnemyBird::GetBoundingSphere(Vector3 center)
 	sphere.Center = center;
 	sphere.Radius = 0.6f;
 	return sphere;
+}
+
+//ステートの更新
+void EnemyBird::UpdateState(Vector3 player)
+{
+	switch (m_state)
+	{
+		case Patrol:
+			m_patrol->Update();
+			break;
+		case Chase:
+			m_chase->Update(player);
+			break;
+		case Battle:
+			m_attack->Update();
+			break;
+		case Escape:
+			m_escape->Update(player);
+			break;
+		case DEAD:
+			break;
+		default:
+			break;
+	}
 }

@@ -24,7 +24,7 @@ using namespace DirectX::SimpleMath;
  *
  * @param[in] なし
  */
-EnemyManager::EnemyManager(Stage* stage)
+EnemyManager::EnemyManager(Stage* stage,PlayerBody* player)
 	:
 	m_crabs{},
 	m_sharks{},
@@ -38,7 +38,8 @@ EnemyManager::EnemyManager(Stage* stage)
 	m_activeSharks{},
 	m_activeBirds{},
 	m_CSVFlag{},
-	m_stage{ stage }
+	m_stage{ stage },
+	m_player{ player }
 {
 }
 
@@ -66,12 +67,12 @@ void EnemyManager::Initialize()
 	// 敵を生成する
 	for (int i = 0; i < MAX_ENEMY_COUNT; i++)
 	{
-		m_crabs[i] = std::make_unique<EnemyCrab>();
-		m_sharks[i] = std::make_unique<EnemyShark>();
+		m_crabs[i] = std::make_unique<EnemyCrab>(m_player);
+		m_sharks[i] = std::make_unique<EnemyShark>(m_player);
 		m_birds[i] = std::make_unique<EnemyBird>();
 	}
 	//ボスを生成する
-	m_boss = std::make_unique<EnemyBoss>();
+	m_boss = std::make_unique<EnemyBoss>(m_player);
 	//生存中の敵の数を初期化する
 	m_activeEnemyCount = 0;
 
@@ -90,7 +91,7 @@ void EnemyManager::Initialize()
  *
  * @return なし
  */
-void EnemyManager::Update(float timer, IEnemy::EnemyState state, DirectX::SimpleMath::Vector3 Ppos)
+void EnemyManager::Update(float timer, IEnemy::EnemyState state)
 {
 	// フレームをカウントする
 	m_frameCounter++;
@@ -115,7 +116,7 @@ void EnemyManager::Update(float timer, IEnemy::EnemyState state, DirectX::Simple
 			continue;
 		}
 
-		crab->Update(timer,Ppos);
+		crab->Update(timer);
 
 		// アクティブな敵をカウントする
 		m_activeEnemyCount++;
@@ -134,7 +135,7 @@ void EnemyManager::Update(float timer, IEnemy::EnemyState state, DirectX::Simple
 			continue;
 		}
 
-		shark->Update(timer,Ppos);
+		shark->Update(timer);
 
 		// アクティブな敵をカウントする
 		m_activeEnemyCount++;
@@ -153,7 +154,7 @@ void EnemyManager::Update(float timer, IEnemy::EnemyState state, DirectX::Simple
 			continue;
 		}
 
-		bird->Update(timer,Ppos);
+		bird->Update(timer);
 
 		// アクティブな敵をカウントする
 		m_activeEnemyCount++;
@@ -162,7 +163,7 @@ void EnemyManager::Update(float timer, IEnemy::EnemyState state, DirectX::Simple
 		m_activeBirds.push_back(bird.get());
 	}
 	//ボスの更新
-	m_boss->Update(timer, Ppos);
+	m_boss->Update(timer);
 }
 
 

@@ -44,7 +44,7 @@ public:
 	//‰Šú‰»
 	virtual void Initialize(EnemyState state,DirectX::SimpleMath::Vector3 position) = 0;
 	//XV
-	virtual void Update(float elapsedTime, DirectX::SimpleMath::Vector3 Ppos) = 0;
+	virtual void Update(float elapsedTime) = 0;
 	//•`‰æ
 	virtual void Render(
 		DirectX::SimpleMath::Vector3 pos,

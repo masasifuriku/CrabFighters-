@@ -15,9 +15,11 @@ using namespace DirectX::SimpleMath;
 /// <summary>
 /// コンストラクタ
 /// </summary>
-CrabAttack::CrabAttack(EnemyCrab* crab)
+CrabAttack::CrabAttack(EnemyCrab* crab,PlayerBody* player)
 	:
-	m_crab(crab)
+	m_crab(crab),
+	m_player(player),
+	m_attackCoolTime{}
 {
 }
 
@@ -34,4 +36,5 @@ CrabAttack::~CrabAttack()
 /// <param name="timer">StepTimerを受け取る</param>
 void CrabAttack::Update()
 {
+	
 }

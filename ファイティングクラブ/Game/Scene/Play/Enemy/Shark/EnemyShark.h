@@ -10,7 +10,12 @@
 #include "Interface/IEnemy.h"
 #include "Libraries/EdeLib/ModelManager.h"
 
+class PlayerBody;
 
+class SharkPatrol;
+class SharkChase;
+class SharkAttack;
+class SharkEscape;
 
 class EnemyShark:public IEnemy
 {
@@ -33,14 +38,23 @@ private:
 	//HP
 	float m_health;
 
+	//プレイヤー
+	PlayerBody* m_player;
+
+	//ステート
+	std::unique_ptr<SharkPatrol> m_patrol;
+	std::unique_ptr<SharkChase> m_chase;
+	std::unique_ptr<SharkAttack> m_attack;
+	std::unique_ptr<SharkEscape> m_escape;
+
 public:
-	EnemyShark();
+	EnemyShark(PlayerBody* player);
 	~EnemyShark();
 
 	void Initialize(
 		IEnemy::EnemyState state,
 		DirectX::SimpleMath::Vector3 position);
-	void Update(float timer, DirectX::SimpleMath::Vector3 Ppos);
+	void Update(float timer);
 	void Render(
 		DirectX::SimpleMath::Vector3 pos,
 		DirectX::SimpleMath::Matrix normal
@@ -65,4 +79,9 @@ public:
 		DirectX::SimpleMath::Vector3 center) override;
 
 	float GetHP() const override{ return m_health; }
+
+private:
+	//ステート管理
+	void UpdateState();
+
 };
