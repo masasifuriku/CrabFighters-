@@ -25,5 +25,5 @@ public:
 	CrabAttack(EnemyCrab* crab, PlayerBody* player);
 	~CrabAttack();
 
-	void Update();
+	void Update(float time);
 };

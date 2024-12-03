@@ -380,6 +380,9 @@ void PlayScene::DrawDebug()
 	//プレイヤーのスタミナ
 	std::wstring PSta = L"Player/Stamina:" + std::to_wstring(m_player->GetStamina());
 	m_Font->DrawString(m_Batch, PSta.c_str(), Vector2(10, 130), Colors::Aqua);
+	//プレイヤーの体力
+	std::wstring Php = L"Player/HP:" + std::to_wstring(m_player->GetHP());
+	m_Font->DrawString(m_Batch, Php.c_str(), Vector2(10, 150), Colors::Aqua);
 	//終わり
 	m_Batch->End();
 }

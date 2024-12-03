@@ -66,7 +66,7 @@ void EnemyCrab::Initialize(
 	//ステート
 	m_patrol = std::make_unique<CrabPatrol>(this);
 	m_chase  = std::make_unique<CrabChase>(this);
-	m_attack = std::make_unique<CrabAttack>(this);
+	m_attack = std::make_unique<CrabAttack>(this, m_player);
 	m_escape = std::make_unique<CrabEscape>(this);
 
 	/*std::vector<Vector3> vec;
@@ -86,8 +86,7 @@ void EnemyCrab::Initialize(
 /// <param name="timer">StepTimerを受け取る</param>
 void EnemyCrab::Update(float timer)
 {
-	UNREFERENCED_PARAMETER(timer);
-	UpdateState();
+	UpdateState(timer);
 }
 
 /// <summary>
@@ -138,7 +137,7 @@ DirectX::BoundingSphere EnemyCrab::GetBoundingSphere(Vector3 center)
 }
 
 //ステートの更新
-void EnemyCrab::UpdateState()
+void EnemyCrab::UpdateState(float time)
 {
 	switch (m_state)
 	{
@@ -149,7 +148,7 @@ void EnemyCrab::UpdateState()
 			m_chase->Update(m_player->GetPos());
 			break;
 		case Battle:
-			m_attack->Update();
+			m_attack->Update(time);
 			break;
 		case Escape:
 			m_escape->Update(m_player->GetPos());

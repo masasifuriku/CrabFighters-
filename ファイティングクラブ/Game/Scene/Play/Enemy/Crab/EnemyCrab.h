@@ -85,5 +85,5 @@ public:
 
 private:
 	//ステート管理
-	void UpdateState();
+	void UpdateState(float time);
 };
