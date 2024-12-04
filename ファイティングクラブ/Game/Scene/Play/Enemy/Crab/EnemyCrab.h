@@ -36,6 +36,8 @@ private:
 	float m_angle;
 	//速度
 	static constexpr float SPEED = 0.1f;
+	//プレイヤーのサイズ
+	float m_size;
 	//HP
 	float m_health;
 

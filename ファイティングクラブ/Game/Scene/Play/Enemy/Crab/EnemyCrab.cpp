@@ -28,6 +28,7 @@ EnemyCrab::EnemyCrab(PlayerBody* player)
 	m_rotate{},
 	m_world{},
 	m_angle{},
+	m_size{},
 	m_health{},
 	m_player{ player },
 	m_patrol{},
@@ -50,17 +51,19 @@ void EnemyCrab::Initialize(
 {
 	// モデルを読み込む
 	m_model = std::make_unique<Ede::ModelManager>();
-	m_model->AddModelData("dice", L"Resources/Models/dice.cmo");
+	m_model->AddModelData("dice", L"Resources/Models/ogani-.cmo");
 	//状態の設定
 	m_state = state;
 	//座標を初期化する
 	m_position = position;
 	//回転
-	m_rotate = Quaternion::FromToRotation(Vector3::UnitZ, -Vector3::UnitZ);
+	m_rotate = Quaternion::Identity;
 	//行列
 	m_world = Matrix::Identity;
 	//角度
 	m_angle = 0.0f;
+	//サイズ
+	m_size = 0.08f;
 	//HP
 	m_health = 100.0f;
 	//ステート
@@ -98,10 +101,11 @@ void EnemyCrab::Render(
 )
 {
 	m_position = pos;
-	Matrix rotation, translation;
+	Matrix size, rotation, translation;
+	size = Matrix::CreateScale(m_size);
 	rotation = Matrix::CreateRotationY(m_angle);
 	translation = Matrix::CreateTranslation(m_position);
-	m_world = rotation * normal * translation;
+	m_world = size * rotation * normal * translation;
 
 	// モデルを描画する
 	if (m_state != DEAD)

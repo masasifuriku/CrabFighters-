@@ -14,6 +14,7 @@
 #include "Game/Scene/Play/Player/PlayerBody.h"
 #include "Game/Scene/Play/Enemy/EnemyManager.h"
 #include "Game/Scene/Play/Stage/Stage.h"
+#include "Game/Scene/Play/SkyDome/SkyDome.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -28,6 +29,7 @@ PlayScene::PlayScene()
 	m_player{},
 	m_enemy{},
 	m_stage{},
+	m_dome{},
 	m_Batch{},
 	m_Font{},
 	m_collision{}
@@ -58,6 +60,9 @@ void PlayScene::Initialize()
 	//敵の生成
 	m_enemy = std::make_unique<EnemyManager>(m_stage.get(), m_player.get());
 	m_enemy->Initialize();
+	//天球の生成
+	m_dome = std::make_unique<SkyDome>();
+	m_dome->Initialize();
 
 	//バッチとフォントを持ってくる
 	m_Batch = Graphics::GetInstance()->GetSpriteBatch();
@@ -118,6 +123,8 @@ void PlayScene::Render()
 	m_enemy->Render();
 	//ステージの描画
 	m_stage->Render();
+	//天球の描画
+	//m_dome->Render();
 	//デバッグ表示
 	DrawDebug();
 }

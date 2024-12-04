@@ -35,7 +35,7 @@ CrabChase::~CrabChase()
 void CrabChase::Update(Vector3 Ppos)
 {
 	// 進行方向ベクトル
-	Vector3 heading = Vector3::Transform(Vector3::Forward * 0.5, Matrix::CreateRotationY(m_crab->GetAngle()));
+	Vector3 heading = Vector3::Transform(Vector3(0.06f, 0.0f, 0.0f), Matrix::CreateRotationY(m_crab->GetAngle()));
 	// プレイヤーへ向かうベクトル
 	Vector3 toTarget = Ppos - m_crab->GetPos();
 
@@ -43,7 +43,7 @@ void CrabChase::Update(Vector3 Ppos)
 	if (toTarget.LengthSquared() > SPEED * SPEED)
 	{
 		// 移動する
-		m_crab->SetPos(heading * SPEED);
+		m_crab->SetPos(heading);
 
 		// 「進行方向ベクトル」と「ターゲットの方向」からcosθを計算する
 		float cosTheta = heading.Dot(toTarget) / (toTarget.Length() * heading.Length());

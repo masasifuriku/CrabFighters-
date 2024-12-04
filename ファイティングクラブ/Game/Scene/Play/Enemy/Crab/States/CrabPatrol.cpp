@@ -42,7 +42,7 @@ CrabPatrol::~CrabPatrol()
 void CrabPatrol::Update()
 {
 	// 進行方向ベクトル
-	Vector3 heading = Vector3::Transform(Vector3::Forward * 0.35, Matrix::CreateRotationY(m_crab->GetAngle()));
+	Vector3 heading = Vector3::Transform(Vector3(0.1f, 0.0f, 0.0f), Matrix::CreateRotationY(m_crab->GetAngle()));
 
 	// ゴールへ向かうベクトル
 	Vector3 toGoal = m_goals[m_currentGoalNo] - m_crab->GetPos();

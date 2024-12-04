@@ -35,7 +35,7 @@ CrabEscape::~CrabEscape()
 void CrabEscape::Update(DirectX::SimpleMath::Vector3 Ppos)
 {
 	// 進行方向ベクトル
-	Vector3 heading = Vector3::Transform(Vector3::Forward * 0.5, Matrix::CreateRotationY(m_crab->GetAngle()));
+	Vector3 heading = Vector3::Transform(Vector3(0.04f, 0.0f, 0.0f), Matrix::CreateRotationY(m_crab->GetAngle()));
 	//プレイヤーから逃げるベクトル
 	Vector3 awayFromPlayer = m_crab->GetPos() - Ppos;
 
@@ -61,5 +61,5 @@ void CrabEscape::Update(DirectX::SimpleMath::Vector3 Ppos)
 	m_crab->SetAngle(theta);
 
 	// 逃走する
-	m_crab->SetPos(heading * SPEED);
+	m_crab->SetPos(heading);
 }

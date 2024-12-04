@@ -10,6 +10,7 @@
 class PlayerBody;
 class EnemyManager;
 class Stage;
+class SkyDome;
 
 namespace mylib
 {
@@ -33,6 +34,8 @@ private:
 	std::unique_ptr<EnemyManager> m_enemy;
 	//ステージ
 	std::unique_ptr<Stage> m_stage;
+	//天球
+	std::unique_ptr<SkyDome> m_dome;
 
 	//スプライトバッチ
 	DirectX::SpriteBatch* m_Batch;
