@@ -39,9 +39,9 @@ void Stage::Initialize()
 {
 	// 地形の表示モデルを読み込む
 	m_model = std::make_unique <Ede::ModelManager>();
-	m_model->AddModelData("Terrain", L"Resources/Models/floor02.cmo");
+	m_model->AddModelData("Terrain", L"Resources/Models/Stage.cmo");
 	//最初は表示しない
-	m_isVisible = false;
+	m_isVisible = true;
 
 	//コリジョンメッシュを生成
 	m_collisionMesh = std::make_unique<mylib::CollisionMesh>();

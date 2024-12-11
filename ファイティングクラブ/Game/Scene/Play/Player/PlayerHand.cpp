@@ -8,6 +8,8 @@
 #include "pch.h"
 #include "PlayerHand.h"
 #include "Game/Screen.h"
+#include "FrameWork/Input.h"
+
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -19,6 +21,8 @@ PlayerHand::PlayerHand()
 	:
 	m_model{},
 	m_rotate{},
+	m_angle{},
+	m_attackCount{},
 	m_time{}
 {
 }
@@ -38,24 +42,12 @@ void PlayerHand::Initialize()
 
 	//回転
 	m_rotate = Quaternion::Identity;
-}
-
-/// <summary>
-/// 更新関数
-/// </summary>
-/// <param name="timer">StepTimerを受け取る</param>
-void PlayerHand::Update(float timer)
-{
-	//腕を元に戻す
-	if (m_rotate != Quaternion::Identity)
-	{
-		m_time += timer;
-		if (m_time >= 0.5f)
-		{
-			m_rotate = Quaternion::Identity;
-			m_time = 0.0f;
-		}
-	}
+	m_angle[0] = 0.0f;
+	m_angle[1] = 10.0f;
+	m_angle[2] = 20.0f;
+	m_angle[3] = 30.0f;
+	//攻撃モーションカウント
+	m_attackCount = 0;
 }
 
 /// <summary>
@@ -73,6 +65,27 @@ void PlayerHand::Render(Matrix world)
 //攻撃時に腕を動かす
 void PlayerHand::AttackMotion()
 {
+	// 配列インデックス管理
+	static bool reverse = false;
+
+	if (!reverse)
+	{
+		m_attackCount++;
+		if (m_attackCount >= 3) // 最後の角度に達したら逆方向へ
+		{
+			m_attackCount = 3;
+			reverse = true;
+		}
+	}
+	else
+	{
+		m_attackCount--;
+		if (m_attackCount <= 0) // 最初の角度に戻ったら進行方向をリセット
+		{
+			m_attackCount = 0;
+			reverse = false;
+		}
+	}
 	// クォータニオンを使って攻撃時の腕の回転を設定
-	m_rotate = Quaternion::CreateFromAxisAngle(Vector3::UnitY, (XMConvertToRadians(30.0f)));
+	m_rotate = Quaternion::CreateFromAxisAngle(Vector3::UnitY, (XMConvertToRadians(m_angle[m_attackCount])));
 }

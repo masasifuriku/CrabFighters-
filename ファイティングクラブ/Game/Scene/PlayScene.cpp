@@ -203,7 +203,7 @@ void PlayScene::UpdateCrabs()
 			//プレイヤーの状態が攻撃なら敵にダメージが入る
 			if (m_player->GetState() == PlayerBody::ATTACK)
 			{
-				crab->TakeDamage(30.0f);
+				crab->TakeDamage(5.0f);
 			}
 		}
 	}
@@ -251,7 +251,7 @@ void PlayScene::UpdateSharks()
 			//プレイヤーの状態が攻撃なら敵にダメージが入る
 			if (m_player->GetState() == PlayerBody::ATTACK)
 			{
-				shark->TakeDamage(30.0f);
+				shark->TakeDamage(5.0f);
 			}
 		}
 	}
@@ -299,7 +299,7 @@ void PlayScene::UpdateBirds()
 			//プレイヤーの状態が攻撃なら敵にダメージが入る
 			if (m_player->GetState() == PlayerBody::ATTACK)
 			{
-				bird->TakeDamage(30.0f);
+				bird->TakeDamage(5.0f);
 			}
 		}
 	}
@@ -347,7 +347,7 @@ void PlayScene::UpdateBoss()
 		//プレイヤーの状態が攻撃なら敵にダメージが入る
 		if (m_player->GetState() == PlayerBody::ATTACK)
 		{
-			boss->TakeDamage(30.0f);
+			boss->TakeDamage(5.0f);
 		}
 	}
 }

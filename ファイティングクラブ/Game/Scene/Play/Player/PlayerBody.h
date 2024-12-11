@@ -60,6 +60,9 @@ private:
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_torusWorld;
 
+	//攻撃カウント
+	int m_attackCount;
+
 
 public:
 	PlayerBody(Stage* stage);

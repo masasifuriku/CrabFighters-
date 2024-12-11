@@ -39,7 +39,8 @@ PlayerBody::PlayerBody(Stage* stage)
 	m_world{},
 	m_torus{},
 	m_torusPosition{},
-	m_torusWorld{}
+	m_torusWorld{},
+	m_attackCount{}
 {
 }
 
@@ -84,6 +85,9 @@ void PlayerBody::Initialize()
 	m_torusPosition = Vector3::Zero;
 	//ワールド行列
 	m_torusWorld = Matrix::Identity;
+
+	//攻撃カウント
+	m_attackCount = 0;
 }
 
 /// <summary>
@@ -92,14 +96,21 @@ void PlayerBody::Initialize()
 /// <param name="timer">StepTimerを受け取る</param>
 void PlayerBody::Update(float timer)
 {
-	//状態を初期化する
-	m_state = NONE;
-	//プレイヤーの手の更新
-	m_hand->Update(timer);
 	//キーボード処理
 	KeyBoardEvent();
 	//マウス移動処理
 	MouseEvent();
+	//ステートが攻撃の時
+	if (m_state == ATTACK)
+	{
+		m_hand->AttackMotion();
+		m_attackCount++;
+		if (m_attackCount >= 6)
+		{
+			m_state = NONE;
+			m_attackCount = 0;
+		}
+	}
 	//攻撃クールタイム減少
 	m_attackCoolTime -= timer;
 	//死亡判定
@@ -191,7 +202,6 @@ void PlayerBody::KeyBoardEvent()
 	{
 		//攻撃する
 		m_state = ATTACK;
-		m_hand->AttackMotion();
 		//クールタイムを設定
 		m_attackCoolTime = 1.0f;
 	}
