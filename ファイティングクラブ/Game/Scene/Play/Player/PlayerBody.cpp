@@ -16,6 +16,8 @@
 #include "FrameWork/Input.h"
 
 #include "Libraries/MyLib/UtilityMath.h"
+#include "Libraries/Microsoft/DebugDraw.h"
+
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -29,6 +31,7 @@ PlayerBody::PlayerBody(Stage* stage)
 	m_hand{},
 	m_stage{ stage },
 	m_state{ NONE }, 
+	m_BoundingSphere{},
 	m_position{},
 	m_velocity{},
 	m_rotate{},
@@ -60,6 +63,9 @@ void PlayerBody::Initialize()
 	//プレイヤーの腕
 	m_hand = std::make_unique<PlayerHand>();
 	m_hand->Initialize();
+
+	// バウンディングスフィアを生成する
+	m_BoundingSphere = CreateBoundingSphere(0.8f);
 
 	//座標を初期化する
 	m_position = Vector3::Zero;
@@ -123,6 +129,9 @@ void PlayerBody::Update(float timer)
 	//ステージとの判定
 	m_position = m_stage->NormalHitDetection(m_position).pos;
 	m_rotateNormal = m_stage->NormalHitDetection(m_position).rotate;
+
+	//バウンディングスフィアの中心点を設定
+	m_BoundingSphere.Center = m_position;
 }
 
 /// <summary>
@@ -144,18 +153,10 @@ void PlayerBody::Render()
 		// モデルを描画する
 		m_model->DrawModel("CrabBody", m_world);
 		m_hand->Render(m_world);
+		DrawBoundingSphere();
 
 		m_torus->Draw(m_torusWorld, view, proj, Colors::DarkGreen);
 	}
-}
-
-//バウンディングスフィア生成
-DirectX::BoundingSphere PlayerBody::GetBoundingSphere(Vector3 center)
-{
-	BoundingSphere sphere;
-	sphere.Center = center;
-	sphere.Radius = 0.75f;
-	return sphere;
 }
 
 //ダメージを受ける
@@ -203,7 +204,7 @@ void PlayerBody::KeyBoardEvent()
 		//攻撃する
 		m_state = ATTACK;
 		//クールタイムを設定
-		m_attackCoolTime = 1.0f;
+		m_attackCoolTime = 0.5f;
 	}
 }
 
@@ -305,4 +306,29 @@ void PlayerBody::MouseEvent()
 	rotation = m_stage->NormalHitDetection(m_torusPosition).rotate;
 	translation = Matrix::CreateTranslation(m_torusPosition);
 	m_torusWorld = size * rotation * translation;
+}
+
+//バウンディングスフィア生成
+DirectX::BoundingSphere PlayerBody::CreateBoundingSphere(const float& radius)
+{
+	// バウンディングスフィアを宣言する
+	DirectX::BoundingSphere turretBoundingSphere;
+	// バウンディングスフィアの半径を設定する
+	turretBoundingSphere.Radius = radius;
+	// バウンディングスフィアを返す
+	return turretBoundingSphere;
+}
+
+// バウンディングスフィアを描画する
+void PlayerBody::DrawBoundingSphere()
+{
+	// 既定色を設定する
+	DirectX::XMVECTOR color = DirectX::Colors::Yellow;
+	auto batch = Graphics::GetInstance();
+	// プリミティブ描画を開始する
+	batch->DrawPrimitiveBegin(batch->GetViewMatrix(), batch->GetProjectionMatrix());
+	// 砲塔の境界球を描画する
+	DX::Draw(batch->GetPrimitiveBatch(), m_BoundingSphere, color);
+	// プリミティブ描画を終了する
+	batch->DrawPrimitiveEnd();
 }

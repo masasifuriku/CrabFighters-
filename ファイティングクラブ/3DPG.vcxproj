@@ -198,6 +198,7 @@
     <ClInclude Include="Game\Scene\Play\Enemy\Boss\States\BossEscape.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Boss\States\BossPatrol.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Crab\EnemyCrab.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Crab\EnemyCrabHand.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabAttack.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabChase.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Crab\States\CrabEscape.h" />
@@ -247,6 +248,7 @@
     <ClCompile Include="Game\Scene\Play\Enemy\Boss\States\BossEscape.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Boss\States\BossPatrol.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Crab\EnemyCrab.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Crab\EnemyCrabHand.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabAttack.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabChase.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Crab\States\CrabEscape.cpp" />

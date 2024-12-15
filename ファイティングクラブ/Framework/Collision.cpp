@@ -32,9 +32,9 @@ bool Collision::CheckHitPlayerToCrab()
 	for (auto& crab : m_enemy->GetActiveCrabs())
 	{
 		//当たってたらtrue
-		if (m_player->GetBoundingSphere(m_player->GetPos()).
+		if (m_player->GetBoundingSphere().
 			Intersects(
-				crab->GetBoundingSphere(crab->GetPos())))
+				crab->GetBoundingSphere()))
 		{
 			return true;
 		}
@@ -48,9 +48,9 @@ bool Collision::CheckHitPlayerToBird()
 	for (auto& bird : m_enemy->GetActiveBirds())
 	{
 		//当たってたらtrue
-		if (m_player->GetBoundingSphere(m_player->GetPos()).
+		if (m_player->GetBoundingSphere().
 			Intersects(
-				bird->GetBoundingSphere(bird->GetPos())))
+				bird->GetBoundingSphere()))
 		{
 			return true;
 		}
@@ -64,9 +64,9 @@ bool Collision::CheckHitPlayerToShark()
 	for (auto& shark : m_enemy->GetActiveSharks())
 	{
 		//当たってたらtrue
-		if (m_player->GetBoundingSphere(m_player->GetPos()).
+		if (m_player->GetBoundingSphere().
 			Intersects(
-				shark->GetBoundingSphere(shark->GetPos())))
+				shark->GetBoundingSphere()))
 		{
 			return true;
 		}
@@ -79,9 +79,9 @@ bool Collision::CheckHitPlayerToBoss()
 	//ボスを持ってくる
 	auto& boss = m_enemy->GetBoss();
 	//当たってたらtrue
-	if (m_player->GetBoundingSphere(m_player->GetPos()).
+	if (m_player->GetBoundingSphere().
 		Intersects(
-			boss->GetBoundingSphere(boss->GetPos())))
+			boss->GetBoundingSphere()))
 	{
 		return true;
 	}
@@ -94,9 +94,9 @@ bool Collision::CheckHitCrabrToPlayer()
 	for (auto& crab : m_enemy->GetActiveCrabs())
 	{
 		//当たってたらtrue
-		if (crab->GetBoundingSphere(crab->GetPos()).
+		if (crab->GetBoundingSphere().
 			Intersects(
-				m_player->GetBoundingSphere(m_player->GetPos())))
+				m_player->GetBoundingSphere()))
 		{
 			return true;
 		}
@@ -110,9 +110,9 @@ bool Collision::CheckHitBirdrToPlayer()
 	for (auto& bird : m_enemy->GetActiveBirds())
 	{
 		//当たってたらtrue
-		if (bird->GetBoundingSphere(bird->GetPos()).
+		if (bird->GetBoundingSphere().
 			Intersects(
-				m_player->GetBoundingSphere(m_player->GetPos())))
+				m_player->GetBoundingSphere()))
 		{
 			return true;
 		}
@@ -126,9 +126,9 @@ bool Collision::CheckHitSharkToPlayer()
 	for (auto& shark : m_enemy->GetActiveSharks())
 	{
 		//当たってたらtrue
-		if (shark->GetBoundingSphere(shark->GetPos()).
+		if (shark->GetBoundingSphere().
 			Intersects(
-				m_player->GetBoundingSphere(m_player->GetPos())))
+				m_player->GetBoundingSphere()))
 		{
 			return true;
 		}
@@ -141,9 +141,9 @@ bool Collision::CheckHitBossToPlayer()
 	//ボスを持ってくる
 	auto& boss = m_enemy->GetBoss();
 	//当たってたらtrue
-	if (boss->GetBoundingSphere(boss->GetPos()).
+	if (boss->GetBoundingSphere().
 		Intersects(
-			m_player->GetBoundingSphere(m_player->GetPos())))
+			m_player->GetBoundingSphere()))
 	{
 		return true;
 	}

@@ -11,6 +11,7 @@ public:
 	//敵の状態
 	enum EnemyState 
 	{
+		NONE,
 		Patrol,  //プレイヤーを探してパトロール
 		Chase,	 //見つけて追跡
 		Battle,	 //交戦中
@@ -34,8 +35,12 @@ public:
 	//ダメージを受ける
 	virtual void TakeDamage(float damage) = 0;
 	//当たり判定生成
+	// バウンディングスフィアを作成する
+	virtual DirectX::BoundingSphere CreateBoundingSphere(const float& radius) = 0;
 	//バウンディングスフィア
-	virtual DirectX::BoundingSphere GetBoundingSphere(DirectX::SimpleMath::Vector3 center) = 0;
+	virtual DirectX::BoundingSphere& GetBoundingSphere() = 0;
+	// バウンディングスフィアを描画する
+	virtual void DrawBoundingSphere() = 0;
 	//体力を取得する
 	virtual float GetHP()const = 0;
 public:

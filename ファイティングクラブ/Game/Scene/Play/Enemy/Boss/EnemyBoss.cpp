@@ -13,6 +13,10 @@
 #include "Game/Scene/Play/Enemy/Boss/States/BossAttack.h"
 #include "Game/Scene/Play/Enemy/Boss/States/BossEscape.h"
 
+#include "FrameWork/DeviceResources.h"
+#include "FrameWork/Graphics.h"
+#include "Libraries/Microsoft/DebugDraw.h"
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
@@ -23,6 +27,7 @@ EnemyBoss::EnemyBoss(PlayerBody* player)
 	:
 	m_model{},
 	m_state{ DEAD }, 
+	m_BoundingSphere{},
 	m_position{},
 	m_velocity{},
 	m_rotate{},
@@ -53,6 +58,8 @@ void EnemyBoss::Initialize(
 	m_model->AddModelData("Boss", L"Resources/Models/dice.cmo");
 	//状態の設定
 	m_state = state;
+	// バウンディングスフィアを生成する
+	m_BoundingSphere = CreateBoundingSphere(11.0f);
 	//座標を初期化する
 	m_position = position;
 	//速度
@@ -123,12 +130,28 @@ void EnemyBoss::TakeDamage(float damage)
 }
 
 //バウンディングスフィア生成
-DirectX::BoundingSphere EnemyBoss::GetBoundingSphere(Vector3 center)
+DirectX::BoundingSphere EnemyBoss::CreateBoundingSphere(const float& radius)
 {
-	BoundingSphere sphere;
-	sphere.Center = center;
-	sphere.Radius = 1.8f;
-	return sphere;
+	// バウンディングスフィアを宣言する
+	DirectX::BoundingSphere turretBoundingSphere;
+	// バウンディングスフィアの半径を設定する
+	turretBoundingSphere.Radius = radius;
+	// バウンディングスフィアを返す
+	return turretBoundingSphere;
+}
+
+// バウンディングスフィアを描画する
+void EnemyBoss::DrawBoundingSphere()
+{
+	// 既定色を設定する
+	DirectX::XMVECTOR color = DirectX::Colors::Yellow;
+	auto batch = Graphics::GetInstance();
+	// プリミティブ描画を開始する
+	batch->DrawPrimitiveBegin(batch->GetViewMatrix(), batch->GetProjectionMatrix());
+	// 砲塔の境界球を描画する
+	DX::Draw(batch->GetPrimitiveBatch(), m_BoundingSphere, color);
+	// プリミティブ描画を終了する
+	batch->DrawPrimitiveEnd();
 }
 
 //ステートの更新

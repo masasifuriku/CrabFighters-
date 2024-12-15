@@ -33,6 +33,8 @@ private:
 	//プレイヤー自身の変数
 	//プレイヤーの状態 
 	PlayerState m_state;
+	// バウンディングスフィア
+	DirectX::BoundingSphere m_BoundingSphere;
 	// プレイヤーの座標
 	DirectX::SimpleMath::Vector3 m_position;
 	//プレイヤーの速さ
@@ -76,8 +78,8 @@ public:
 	DirectX::SimpleMath::Vector3 GetPos() const { return m_position; }
 	//状態
 	PlayerState GetState() { return m_state; }
-	//バウンディングスフィア生成
-	DirectX::BoundingSphere GetBoundingSphere(DirectX::SimpleMath::Vector3 center);
+	//バウンディングスフィア取得
+	DirectX::BoundingSphere& GetBoundingSphere() { return m_BoundingSphere; }
 	//体力を取得
 	float GetHP() const { return m_health; }
 	//ダメージを受ける
@@ -89,4 +91,9 @@ private:
 	void KeyBoardEvent();
 	//マウス処理
 	void MouseEvent();
+	//バウンディングスフィア生成
+	DirectX::BoundingSphere CreateBoundingSphere(
+		const float& radius);
+	// バウンディングスフィアを描画する
+	void DrawBoundingSphere();
 };

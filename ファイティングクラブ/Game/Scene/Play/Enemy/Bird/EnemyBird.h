@@ -23,6 +23,9 @@ private:
 	//状態
 	EnemyState m_state;
 
+	// バウンディングスフィア
+	DirectX::BoundingSphere m_BoundingSphere;
+
 	// 座標
 	DirectX::SimpleMath::Vector3 m_position;
 	// 速さ
@@ -70,9 +73,14 @@ public:
 	//ダメージを受ける
 	void TakeDamage(float damage)override;
 	//バウンディングスフィア生成
-	DirectX::BoundingSphere GetBoundingSphere(
-		DirectX::SimpleMath::Vector3 center) override;
-
+	DirectX::BoundingSphere CreateBoundingSphere(
+		const float& radius) override;
+	//バウンディングスフィアを取得する
+	DirectX::BoundingSphere& GetBoundingSphere() override
+	{ return m_BoundingSphere; }
+	// バウンディングスフィアを描画する
+	void DrawBoundingSphere() override;
+	//体力を取得
 	float GetHP() const override{ return m_health; }
 
 private:

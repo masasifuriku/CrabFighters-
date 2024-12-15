@@ -13,6 +13,11 @@
 #include "Game/Scene/Play/Enemy/Shark/States/SharkAttack.h"
 #include "Game/Scene/Play/Enemy/Shark/States/SharkEscape.h"
 
+#include "FrameWork/DeviceResources.h"
+#include "FrameWork/Graphics.h"
+#include "Libraries/Microsoft/DebugDraw.h"
+
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
@@ -23,6 +28,7 @@ EnemyShark::EnemyShark(PlayerBody* player)
 	:
 	m_model{},
 	m_state{ DEAD },
+	m_BoundingSphere{},
 	m_position{},
 	m_velocity{},
 	m_rotate{},
@@ -51,6 +57,9 @@ void EnemyShark::Initialize(
 	// モデルを読み込む
 	m_model = std::make_unique<Ede::ModelManager>();
 	m_model->AddModelData("dice", L"Resources/Models/shark.cmo");
+	// バウンディングスフィアを生成する
+	m_BoundingSphere = CreateBoundingSphere(11.0f);
+
 	//状態の設定
 	m_state = state;
 	//座標を初期化する
@@ -98,6 +107,7 @@ void EnemyShark::Render(
 )
 {
 	m_position = pos;
+	m_BoundingSphere.Center = m_position;
 	Matrix size, rotation, translation;
 	size = Matrix::CreateScale(0.01f);
 	rotation = Matrix::CreateRotationY(m_angle);
@@ -129,12 +139,28 @@ void EnemyShark::TakeDamage(float damage)
 }
 
 //バウンディングスフィア生成
-DirectX::BoundingSphere EnemyShark::GetBoundingSphere(Vector3 center)
+DirectX::BoundingSphere EnemyShark::CreateBoundingSphere(const float& radius)
 {
-	BoundingSphere sphere;
-	sphere.Center = center;
-	sphere.Radius = 0.6f;
-	return sphere;
+	// バウンディングスフィアを宣言する
+	DirectX::BoundingSphere turretBoundingSphere;
+	// バウンディングスフィアの半径を設定する
+	turretBoundingSphere.Radius = radius;
+	// バウンディングスフィアを返す
+	return turretBoundingSphere;
+}
+
+// バウンディングスフィアを描画する
+void EnemyShark::DrawBoundingSphere()
+{
+	// 既定色を設定する
+	DirectX::XMVECTOR color = DirectX::Colors::Yellow;
+	auto batch = Graphics::GetInstance();
+	// プリミティブ描画を開始する
+	batch->DrawPrimitiveBegin(batch->GetViewMatrix(), batch->GetProjectionMatrix());
+	// 砲塔の境界球を描画する
+	DX::Draw(batch->GetPrimitiveBatch(), m_BoundingSphere, color);
+	// プリミティブ描画を終了する
+	batch->DrawPrimitiveEnd();
 }
 
 //ステートの更新
