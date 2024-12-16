@@ -3,6 +3,7 @@
 #define COLLISION_DEFINED
 
 class PlayerBody;
+class PlayerHand;
 class EnemyManager;
 
 // Collisionクラスを定義する
@@ -18,23 +19,29 @@ public:
 	void SetEnemy(EnemyManager* enemy) { m_enemy = enemy; }
 
 public:
-	//プレイヤーからカニへの当たり判定
-	bool CheckHitPlayerToCrab();
-	//プレイヤーから鳥への当たり判定
-	bool CheckHitPlayerToBird();
-	//プレイヤーからサメへの当たり判定
-	bool CheckHitPlayerToShark();
-	//プレイヤーからボスへの当たり判定
-	bool CheckHitPlayerToBoss();
+	//攻撃系の当たり判定
+	//プレイヤーからカニへの攻撃当たり判定
+	bool CheckHitAttackPlayerToCrab();
+	//プレイヤーから鳥への攻撃当たり判定
+	bool CheckHitAttackPlayerToBird();
+	//プレイヤーからサメへの攻撃当たり判定
+	bool CheckHitAttackPlayerToShark();
+	//プレイヤーからボスへの攻撃当たり判定
+	bool CheckHitAttackPlayerToBoss();
+	//カニからプレイヤーへの攻撃当たり判定
+	bool CheckHitAttackCrabrToPlayer();
+	//鳥からプレイヤーへの攻撃当たり判定
+	bool CheckHitAttackBirdrToPlayer();
+	//サメからプレイヤーへの攻撃当たり判定
+	bool CheckHitAttackSharkToPlayer();
+	//ボスからプレイヤーへの攻撃当たり判定
+	bool CheckHitAttackBossToPlayer();
 
-	//カニからプレイヤーへの当たり判定
-	bool CheckHitCrabrToPlayer();
-	//鳥からプレイヤーへの当たり判定
-	bool CheckHitBirdrToPlayer();
-	//サメからプレイヤーへの当たり判定
-	bool CheckHitSharkToPlayer();
-	//ボスからプレイヤーへの当たり判定
-	bool CheckHitBossToPlayer();
+	//押し戻し用当たり判定
+	bool CheckHitPlayerAndCrab();
+	bool CheckHitPlayerAndBird();
+	bool CheckHitPlayerAndShark();
+	bool CheckHitPlayerAndBoss();
 
 public:
 	Collision(Collision&&) = default;
@@ -53,6 +60,8 @@ private:
 
 	//プレイヤーのポインタ
 	PlayerBody* m_player;
+	//プレイヤーの腕のポインタ
+	PlayerHand* m_playerHand;
 	//敵のポインタ
 	EnemyManager* m_enemy;
 };

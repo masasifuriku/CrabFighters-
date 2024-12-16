@@ -38,7 +38,7 @@ public:
 	// バウンディングスフィアを作成する
 	virtual DirectX::BoundingSphere CreateBoundingSphere(const float& radius) = 0;
 	//バウンディングスフィア
-	virtual DirectX::BoundingSphere& GetBoundingSphere() = 0;
+	virtual DirectX::BoundingSphere& GetBodyBoundingSphere() = 0;
 	// バウンディングスフィアを描画する
 	virtual void DrawBoundingSphere() = 0;
 	//体力を取得する

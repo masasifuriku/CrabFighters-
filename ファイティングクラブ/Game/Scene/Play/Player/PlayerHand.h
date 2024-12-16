@@ -17,6 +17,9 @@ private:
 	// モデル
 	std::unique_ptr<Ede::ModelManager> m_model;
 
+	// バウンディングスフィア
+	DirectX::BoundingSphere m_BoundingSphere;
+
 	//プレイヤー自身の変数
 	// クォータニオン
 	DirectX::SimpleMath::Quaternion m_rotate;
@@ -34,7 +37,16 @@ public:
 public:
 	//プレイヤーの攻撃モーション
 	void AttackMotion();
+	//バウンディングスフィア取得
+	DirectX::BoundingSphere& GetHandBoundingSphere() { return m_BoundingSphere; }
+	//バウンディングスフィアの中心点を設定を設定
+	void SetSphereCenter(DirectX::SimpleMath::Vector3 center) { m_BoundingSphere.Center = center; }
 
 private:
-	
+	//バウンディングスフィア生成
+	DirectX::BoundingSphere CreateBoundingSphere(
+		const float& radius);
+	// バウンディングスフィアを描画する
+	void DrawBoundingSphere();
+
 };

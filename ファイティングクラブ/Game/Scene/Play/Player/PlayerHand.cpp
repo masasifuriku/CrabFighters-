@@ -8,7 +8,11 @@
 #include "pch.h"
 #include "PlayerHand.h"
 #include "Game/Screen.h"
+#include "FrameWork/DeviceResources.h"
+#include "FrameWork/Graphics.h"
 #include "FrameWork/Input.h"
+
+#include "Libraries/Microsoft/DebugDraw.h"
 
 
 using namespace DirectX;
@@ -20,6 +24,7 @@ using namespace DirectX::SimpleMath;
 PlayerHand::PlayerHand()
 	:
 	m_model{},
+	m_BoundingSphere{},
 	m_rotate{},
 	m_angle{},
 	m_attackCount{},
@@ -40,6 +45,9 @@ void PlayerHand::Initialize()
 	m_model = std::make_unique<Ede::ModelManager>();
 	m_model->AddModelData("CrabRightHand", L"Resources/Models/CrabRightHand.cmo");
 
+	// バウンディングスフィアを生成する
+	m_BoundingSphere = CreateBoundingSphere(0.3f);
+
 	//回転
 	m_rotate = Quaternion::Identity;
 	m_angle[0] = 0.0f;
@@ -55,11 +63,23 @@ void PlayerHand::Initialize()
 /// </summary>
 void PlayerHand::Render(Matrix world)
 {
-	//体のワールド行列に合わせる
-	Matrix rotation = Matrix::CreateFromQuaternion(m_rotate);
-	Matrix handworld = rotation * world;
+	Matrix rotation, translation;
+	//攻撃時に腕を回転
+	rotation = Matrix::CreateFromQuaternion(m_rotate);
+	//腕を体のワールド座標と合わせる
+	Matrix handWorld = rotation * world;
+
+	//バウンディングスフィアを腕に合わせる
+	translation = Matrix::CreateTranslation(-8.0f, 0.0f, 8.0f);
+	//腕に合わせたのと体に合わせたのを合わせる
+	Matrix handSphere = translation * handWorld;
+	// バウンディングスフィアの中心を更新
+	Vector3 handPosition = Vector3::Transform(Vector3(1.0f, 0.0f, 1.0f), handSphere);
+	m_BoundingSphere.Center = handPosition;
+
 	// モデルを描画する
-	m_model->DrawModel("CrabRightHand",handworld);
+	m_model->DrawModel("CrabRightHand",handWorld);
+	DrawBoundingSphere();
 }
 
 //攻撃時に腕を動かす
@@ -88,4 +108,29 @@ void PlayerHand::AttackMotion()
 	}
 	// クォータニオンを使って攻撃時の腕の回転を設定
 	m_rotate = Quaternion::CreateFromAxisAngle(Vector3::UnitY, (XMConvertToRadians(m_angle[m_attackCount])));
+}
+
+//バウンディングスフィア生成
+DirectX::BoundingSphere PlayerHand::CreateBoundingSphere(const float& radius)
+{
+	// バウンディングスフィアを宣言する
+	DirectX::BoundingSphere turretBoundingSphere;
+	// バウンディングスフィアの半径を設定する
+	turretBoundingSphere.Radius = radius;
+	// バウンディングスフィアを返す
+	return turretBoundingSphere;
+}
+
+// バウンディングスフィアを描画する
+void PlayerHand::DrawBoundingSphere()
+{
+	// 既定色を設定する
+	DirectX::XMVECTOR color = DirectX::Colors::Black;
+	auto batch = Graphics::GetInstance();
+	// プリミティブ描画を開始する
+	batch->DrawPrimitiveBegin(batch->GetViewMatrix(), batch->GetProjectionMatrix());
+	// 砲塔の境界球を描画する
+	DX::Draw(batch->GetPrimitiveBatch(), m_BoundingSphere, color);
+	// プリミティブ描画を終了する
+	batch->DrawPrimitiveEnd();
 }

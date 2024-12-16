@@ -14,6 +14,7 @@
 #include "FrameWork/DeviceResources.h"
 #include "FrameWork/Graphics.h"
 #include "FrameWork/Input.h"
+#include "Framework/Collision.h"
 
 #include "Libraries/MyLib/UtilityMath.h"
 #include "Libraries/Microsoft/DebugDraw.h"
@@ -40,6 +41,7 @@ PlayerBody::PlayerBody(Stage* stage)
 	m_stamina{},
 	m_attackCoolTime{},
 	m_world{},
+	m_isHit{},
 	m_torus{},
 	m_torusPosition{},
 	m_torusWorld{},
@@ -83,6 +85,8 @@ void PlayerBody::Initialize()
 	m_stamina = 100.0f;
 	//攻撃クールタイム
 	m_attackCoolTime = 0.0f;
+	//衝突判定
+	m_isHit = false;
 
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	//マウス操作系
@@ -106,6 +110,8 @@ void PlayerBody::Update(float timer)
 	KeyBoardEvent();
 	//マウス移動処理
 	MouseEvent();
+	//衝突判定
+	m_isHit = Collision::GetInstance()->CheckHitPlayerAndCrab();
 	//ステートが攻撃の時
 	if (m_state == ATTACK)
 	{
@@ -288,6 +294,7 @@ void PlayerBody::MouseEvent()
 		//クオータニオンを回転に掛ける
 		m_rotate = q * m_rotate;
 
+		
 		//角度を合わせながら微移動
 		m_velocity += Vector3::Transform(Vector3(0.03f, 0.0f, 0.0f), m_rotate);
 
@@ -297,6 +304,7 @@ void PlayerBody::MouseEvent()
 			//プレイヤーを移動する
 			m_velocity += velocity;
 		}
+		
 	}
 
 	//トーラスのワールド行列を計算する

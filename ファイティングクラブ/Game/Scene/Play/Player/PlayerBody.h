@@ -54,6 +54,8 @@ private:
 	float m_attackCoolTime;
 	//プレイヤーのワールド行列
 	DirectX::SimpleMath::Matrix m_world;
+	//衝突判定
+	bool m_isHit;
 
 	//マウス操作系
 	std::unique_ptr<DirectX::GeometricPrimitive> m_torus;
@@ -79,13 +81,15 @@ public:
 	//状態
 	PlayerState GetState() { return m_state; }
 	//バウンディングスフィア取得
-	DirectX::BoundingSphere& GetBoundingSphere() { return m_BoundingSphere; }
+	DirectX::BoundingSphere& GetBodyBoundingSphere() { return m_BoundingSphere; }
 	//体力を取得
 	float GetHP() const { return m_health; }
 	//ダメージを受ける
 	void TakeDamage(float damage);
 	//スタミナを取得
 	float GetStamina()const { return m_stamina; }
+	//腕を渡す
+	PlayerHand* GetHand() { return m_hand.get(); }
 private:
 	//キーボード処理
 	void KeyBoardEvent();

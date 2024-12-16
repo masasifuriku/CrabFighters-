@@ -65,7 +65,7 @@ void EnemyCrab::Initialize(
 	//状態の設定
 	m_state = state;
 	// バウンディングスフィアを生成する
-	m_BoundingSphere = CreateBoundingSphere(0.8f);
+	m_BoundingSphere = CreateBoundingSphere(0.9f);
 	//座標を初期化する
 	m_position = position;
 	//回転

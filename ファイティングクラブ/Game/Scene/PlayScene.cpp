@@ -179,7 +179,7 @@ void PlayScene::UpdateCrabs()
 			crab->SetEnemyState(IEnemy::EnemyState::Chase);
 		}
 		//ステートを攻撃する
-		if (Collision::GetInstance()->CheckHitCrabrToPlayer())
+		if (Collision::GetInstance()->CheckHitAttackCrabrToPlayer())
 		{
 			crab->SetEnemyState(IEnemy::EnemyState::Battle);
 		}
@@ -198,7 +198,7 @@ void PlayScene::UpdateCrabs()
 			crab->SetEnemyState(IEnemy::EnemyState::DEAD);
 		}
 		//プレイヤーからカニへの攻撃
-		if (Collision::GetInstance()->CheckHitPlayerToCrab())
+		if (Collision::GetInstance()->CheckHitAttackPlayerToCrab())
 		{
 			//プレイヤーの状態が攻撃なら敵にダメージが入る
 			if (m_player->GetState() == PlayerBody::ATTACK)
@@ -246,7 +246,7 @@ void PlayScene::UpdateSharks()
 			shark->SetEnemyState(IEnemy::EnemyState::DEAD);
 		}
 		//プレイヤーからサメへの攻撃
-		if (Collision::GetInstance()->CheckHitPlayerToShark())
+		if (Collision::GetInstance()->CheckHitAttackPlayerToShark())
 		{
 			//プレイヤーの状態が攻撃なら敵にダメージが入る
 			if (m_player->GetState() == PlayerBody::ATTACK)
@@ -294,7 +294,7 @@ void PlayScene::UpdateBirds()
 			bird->SetEnemyState(IEnemy::EnemyState::DEAD);
 		}
 		//プレイヤーから鳥への攻撃
-		if (Collision::GetInstance()->CheckHitPlayerToBird())
+		if (Collision::GetInstance()->CheckHitAttackPlayerToBird())
 		{
 			//プレイヤーの状態が攻撃なら敵にダメージが入る
 			if (m_player->GetState() == PlayerBody::ATTACK)
@@ -342,7 +342,7 @@ void PlayScene::UpdateBoss()
 		boss->SetEnemyState(IEnemy::EnemyState::DEAD);
 	}
 	//プレイヤーから鳥への攻撃
-	if (Collision::GetInstance()->CheckHitPlayerToBoss())
+	if (Collision::GetInstance()->CheckHitAttackPlayerToBoss())
 	{
 		//プレイヤーの状態が攻撃なら敵にダメージが入る
 		if (m_player->GetState() == PlayerBody::ATTACK)

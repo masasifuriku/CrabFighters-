@@ -82,7 +82,7 @@ public:
 	DirectX::BoundingSphere CreateBoundingSphere(
 		const float& radius) override;
 	//バウンディングスフィアを取得する
-	DirectX::BoundingSphere& GetBoundingSphere() override
+	DirectX::BoundingSphere& GetBodyBoundingSphere() override
 	{ return m_BoundingSphere; }
 	// バウンディングスフィアを描画する
 	void DrawBoundingSphere() override;
