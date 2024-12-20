@@ -8,6 +8,8 @@
 #include "pch.h"
 #include "Stage.h"
 #include "Game/Screen.h"
+#include "FrameWork/DeviceResources.h"
+#include "FrameWork/Graphics.h"
 
 #include "Libraries/MyLib/CollisionMesh.h"
 
@@ -40,8 +42,6 @@ void Stage::Initialize()
 	// 地形の表示モデルを読み込む
 	m_model = std::make_unique <Ede::ModelManager>();
 	m_model->AddModelData("Terrain", L"Resources/Models/Stage.cmo");
-	//最初は表示しない
-	m_isVisible = true;
 
 	//コリジョンメッシュを生成
 	m_collisionMesh = std::make_unique<mylib::CollisionMesh>();
@@ -58,14 +58,12 @@ void Stage::Initialize()
 void Stage::Render()
 {
 	// メッシュを描画する
-	m_collisionMesh->Draw();
+	//m_collisionMesh->Draw();
 
 	// モデルを描画する
-	Matrix mat = Matrix::CreateTranslation(Vector3(0.0f, -1.2f, 0.0f));
-	if (m_isVisible)
-	{
-		m_model->DrawModel("Terrain", mat);
-	}
+	Matrix mat = Matrix::CreateTranslation(Vector3(0.0f, -0.5f, 0.0f));
+	m_model->DrawModel("Terrain", mat);
+	
 }
 
 //法線との当たり判定
@@ -74,7 +72,7 @@ Normal Stage::NormalHitDetection(DirectX::SimpleMath::Vector3 pos)
 	//Rayを使ったコリジョンメッシュとの当たり判定
 	Vector3 rayOrigin = pos;
 	//Rayの始まりを少し上にあげておく
-	rayOrigin.y += 2.0f;
+	rayOrigin.y += 5.0f;
 
 	//Rayと衝突時のポリゴンの法線を定義する
 	Ray ray{ rayOrigin,Vector3::Down };

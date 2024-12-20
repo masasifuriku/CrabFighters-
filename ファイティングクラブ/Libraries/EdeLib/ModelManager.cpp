@@ -45,5 +45,26 @@ void Ede::ModelManager::DrawModel(
 	DirectX::SimpleMath::Matrix view = Graphics::GetInstance()->GetViewMatrix();
 	DirectX::SimpleMath::Matrix proj = Graphics::GetInstance()->GetProjectionMatrix();
 
+	// ライトを切る設定
+	it->second->UpdateEffects([](DirectX::IEffect* effect)
+		{
+			// ライトをきる
+			auto lights = dynamic_cast<DirectX::IEffectLights*>(effect);
+			if (lights)
+			{
+				lights->SetLightEnabled(0, false);
+				lights->SetLightEnabled(1, false);
+				lights->SetLightEnabled(2, false);
+				// 環境光を黒に
+				lights->SetAmbientLightColor(DirectX::Colors::Red);
+			}
+			// 自己発光させる
+			auto basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
+			if (basicEffect)
+			{
+				basicEffect->SetEmissiveColor(DirectX::Colors::White);
+			}
+		});
+
 	it->second->Draw(context, *states, world, view, proj);
 }

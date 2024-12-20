@@ -1,27 +1,17 @@
 //--------------------------------------------------------------------------------------
-// File: PlayerBody.h
+// File: PlayerMove.h
 //
-// プレイヤー本体クラス
+// プレイヤーの移動クラス
 //
 //-------------------------------------------------------------------------------------
 
 #pragma once
 #include "StepTimer.h"
-#include "Libraries/EdeLib/ModelManager.h"
 
 class Stage;
-class PlayerHand;
 
-class PlayerBody
+class PlayerMove
 {
-public:
-	//プレイヤーの状態
-	enum PlayerState {
-		NONE,   //何もしていない
-		ATTACK, //攻撃
-		DEAD    //死亡
-	};
-
 private:
 	// モデル
 	std::unique_ptr<Ede::ModelManager> m_model;
@@ -69,8 +59,8 @@ private:
 
 
 public:
-	PlayerBody(Stage* stage);
-	~PlayerBody();
+	PlayerMove(Stage* stage);
+	~PlayerMove();
 
 	void Initialize();
 	void Update(float timer);
@@ -81,7 +71,7 @@ public:
 	//状態
 	PlayerState GetState() { return m_state; }
 	//バウンディングスフィア取得
-	DirectX::BoundingSphere& GetBodyBoundingSphere() { return m_BoundingSphere; }
+	DirectX::BoundingSphere& GetMoveBoundingSphere() { return m_BoundingSphere; }
 	//体力を取得
 	float GetHP() const { return m_health; }
 	//ダメージを受ける
@@ -90,7 +80,6 @@ public:
 	float GetStamina()const { return m_stamina; }
 	//腕を渡す
 	PlayerHand* GetHand() { return m_hand.get(); }
-	float Clamp(float value, float min, float max){ return std::max(min, std::min(value, max)); }
 private:
 	//キーボード処理
 	void KeyBoardEvent();

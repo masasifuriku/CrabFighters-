@@ -92,7 +92,7 @@ void PlayScene::Update(float elapsedTime)
 	m_player->Update(elapsedTime);
 
 	//敵の更新
-	m_enemy->Update(elapsedTime, IEnemy::Patrol);
+	//m_enemy->Update(elapsedTime, IEnemy::Patrol);
 
 	//敵のステート更新
 	UpdateCrabs();

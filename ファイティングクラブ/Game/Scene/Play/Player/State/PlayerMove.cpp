@@ -224,8 +224,7 @@ void PlayerBody::MouseEvent()
 	Matrix proj = Graphics::GetInstance()->GetProjectionMatrix();
 
 	//クオータニオン保存用
-	Quaternion q = Quaternion::Identity;
-	Vector3 velocity = Vector3::Zero;
+	Quaternion q;
 
 	//トーラスの座標を指定する
 	if (moState.leftButton)
@@ -247,73 +246,72 @@ void PlayerBody::MouseEvent()
 		}
 	}
 
-	//プレイヤーの正面ベクトル
+	//プレイヤーの移動ベクトル
+	Vector3 velocity = Vector3::Transform(Vector3(0.07f, 0.0f, 0.0f), m_rotate);
+
+	// プレイヤーの正面ベクトル
 	Vector3 forward = Vector3::Transform(Vector3(1.0f, 0.0f, 0.0f), m_rotate);
 	forward.Normalize();
+
 	//プレイヤーからトーラスへ向かうベクトル
 	Vector3 toTorus = m_torusPosition - m_position;
-	toTorus.Normalize();
-	//ドット積の計算
-	float dot = (forward.x * toTorus.x) + 
-				(forward.y * toTorus.y) + 
-				(forward.z * toTorus.z);
+	Vector3 v = toTorus;
+	v.Normalize();
+
+	//プレイヤーの視野角
+	constexpr float viewAngle = XMConvertToRadians(90.0f);
 
 	//プレイヤーとトーラスの距離が近すぎなければ
-	if (toTorus.LengthSquared() > 0.1f)
+	//ある程度妥協
+	if (toTorus.LengthSquared() > 0.3f)
 	{
-		// XZ平面上での方向を求める
-		Vector3 toTorusXZ = Vector3(toTorus.x, 0.0f, toTorus.z);
-		Vector3 forwardXZ = Vector3(forward.x, 0.0f, forward.z);
-		toTorusXZ.Normalize();
-		forwardXZ.Normalize();
+		// forwardとvの間の角度をcos値で計算
+		float dot = forward.Dot(v);
+		float angle = std::acos(dot);
 
-		// atan2を用いて現在の方向とトーラス方向の角度を計算
-		float angle = std::atan2(toTorusXZ.z, toTorusXZ.x) - std::atan2(forwardXZ.z, forwardXZ.x);
+		//プレイヤーがトーラスの方向に回転する
+		//「プレイヤーの移動ベクトル」と「トーラスの方向」からcosθ
+		float cosTheta = velocity.Dot(toTorus) / (toTorus.Length() * velocity.Length());
 
-		// -π ～ π の範囲に正規化
-		if (angle > XM_PI)
+		//acosの引数で指定できる範囲は「-1～1」なので、値を補正する
+		cosTheta = std::max(-1.0f, std::min(cosTheta, 1.0f));
+
+		//cosθからθを計算する
+		float theta = std::acos(cosTheta);
+
+		//１フレームでの回転角を制限値以内に補正する
+		theta = std::min(1.0f, theta);
+
+		//右側に行きたい場合は角度の符号を付け替える
+		if (velocity.Cross(toTorus).y < 0.0f)
 		{
-			angle -= XM_2PI;
+			theta *= (-1.0f);
 		}
-		else if (angle < -XM_PI)
+
+		// プレイヤーの角度を更新する
+		q *= Quaternion::CreateFromAxisAngle(Vector3::UnitY, XMConvertToRadians(theta));
+
+		//クオータニオンを回転に掛ける
+		m_rotate = q * m_rotate;
+
+		
+		//角度を合わせながら微移動
+		m_velocity += Vector3::Transform(Vector3(0.03f, 0.0f, 0.0f), m_rotate);
+
+		//目的地に角度があったら移動
+		if (angle < std::cos(viewAngle / 1.5f))
 		{
-			angle += XM_2PI;
+			//プレイヤーを移動する
+			m_velocity += velocity;
 		}
-
-		// 1フレームでの回転角を制限
-		constexpr float maxRotationPerFrame = XMConvertToRadians(1.0f); 
-		angle = Clamp(angle, -maxRotationPerFrame, maxRotationPerFrame);
-
-		//プレイヤーの右
-		if (dot > 0.0f) {
-			// プレイヤーの角度を更新する
-			q *= Quaternion::CreateFromAxisAngle(Vector3::UnitY, -angle);
-			//クオータニオンを回転に掛ける
-			m_rotate = q * m_rotate;
-			//プレイヤーを移動する
-			Vector3 velocity = Vector3::Transform(Vector3(-0.07f, 0.0f, 0.0f), m_rotate);
-			//プレイヤーを移動する
-			m_velocity -= velocity;
-		}
-		//プレイヤーの左
-		else if (dot < 0.0f) {
-			// プレイヤーの角度を更新する
-			q *= Quaternion::CreateFromAxisAngle(Vector3::UnitY, angle);
-			//クオータニオンを回転に掛ける
-			m_rotate = q * m_rotate;
-			//プレイヤーを移動する
-			Vector3 velocity = Vector3::Transform(Vector3(0.07f, 0.0f, 0.0f), m_rotate);
-			//プレイヤーを移動する
-			m_velocity -= velocity;
-		}
+		
 	}
-	
+
 	//トーラスのワールド行列を計算する
-	auto hitDetectionResult = m_stage->NormalHitDetection(m_torusPosition);
-	m_torusPosition = hitDetectionResult.pos;
+	m_torusPosition = m_stage->NormalHitDetection(m_torusPosition).pos;
 	Matrix size, rotation, translation;
 	size = Matrix::CreateScale(0.5f, 0.01f, 0.5f);
-	rotation = hitDetectionResult.rotate;
+	rotation = m_stage->NormalHitDetection(m_torusPosition).rotate;
 	translation = Matrix::CreateTranslation(m_torusPosition);
 	m_torusWorld = size * rotation * translation;
 }

@@ -19,7 +19,6 @@ struct Normal
 	DirectX::SimpleMath::Matrix rotate;
 };
 
-
 class Stage
 {
 private:
@@ -38,7 +37,6 @@ private:
 	Normal m_normal;
 	//Õ“Ë‚µ‚½ƒ|ƒŠƒSƒ“‚Ì”Ô†
 	int m_hitPolygonNo;
-	
 
 public:
 	Stage();
