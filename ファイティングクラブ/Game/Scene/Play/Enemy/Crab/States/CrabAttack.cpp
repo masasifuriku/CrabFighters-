@@ -22,7 +22,7 @@ CrabAttack::CrabAttack(EnemyCrab* crab, PlayerBody* player, EnemyCrabHand* hand)
 	m_crab(crab),
 	m_player(player),
 	m_hand(hand),
-	m_attackCoolTime{},
+	m_attackCoolTime{ 1.0f } ,
 	m_attackCount{}
 {
 }
@@ -49,10 +49,10 @@ void CrabAttack::Update(float time)
 		//カウントを増やす
 		m_attackCount++;
 		//カウントが終わったら
-		if (m_attackCount >= 6)
+		if (m_attackCount >= 8)
 		{
 			//攻撃する
-			m_player->TakeDamage(20.0f);
+			m_player->TakeDamage(10.0f);
 			//カウントを戻す
 			m_attackCount = 0;
 			//クールタイムを設定

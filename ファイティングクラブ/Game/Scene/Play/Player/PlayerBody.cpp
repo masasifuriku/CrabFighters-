@@ -66,9 +66,6 @@ void PlayerBody::Initialize()
 	m_hand = std::make_unique<PlayerHand>();
 	m_hand->Initialize();
 
-	// バウンディングスフィアを生成する
-	m_BoundingSphere = CreateBoundingSphere(0.8f);
-
 	//座標を初期化する
 	m_position = Vector3::Zero;
 	//行列
@@ -78,7 +75,7 @@ void PlayerBody::Initialize()
 	//回転
 	m_rotate = Quaternion::Identity;
 	//サイズ
-	m_size = 0.08f;
+	m_size = 0.1f;
 	//体力
 	m_health = 100.0f;
 	//スタミナ
@@ -98,6 +95,11 @@ void PlayerBody::Initialize()
 
 	//攻撃カウント
 	m_attackCount = 0;
+
+	// バウンディングスフィアを生成する
+	m_BoundingSphere = CreateBoundingSphere(m_size * 10);
+
+	Collision::GetInstance()->SetPlayer(this);
 }
 
 /// <summary>
@@ -110,16 +112,15 @@ void PlayerBody::Update(float timer)
 	KeyBoardEvent();
 	//マウス移動処理
 	MouseEvent();
-	//衝突判定
-	m_isHit = Collision::GetInstance()->CheckHitPlayerAndCrab();
 	//ステートが攻撃の時
 	if (m_state == ATTACK)
 	{
 		m_hand->AttackMotion();
 		m_attackCount++;
-		if (m_attackCount >= 6)
+		if (m_attackCount >= 8)
 		{
-			m_state = NONE;
+			//ステートをアイドリングに変更
+			m_state = IDLING;
 			m_attackCount = 0;
 		}
 	}
@@ -165,16 +166,10 @@ void PlayerBody::Render()
 	}
 }
 
-//ダメージを受ける
-void PlayerBody::TakeDamage(float damage)
-{
-	m_health -= damage;
-}
-
 //キーボード処理
 void PlayerBody::KeyBoardEvent()
 {
-	//キーステート
+	//キーステートを取得
 	const auto& kbState = Input::GetInstance()->GetKeyState();
 
 	//移動中にレフトシフトを押したらダッシュ
@@ -185,7 +180,8 @@ void PlayerBody::KeyBoardEvent()
 		//スタミナがあるとき
 		if (m_stamina >= 0.0f)
 		{
-			m_velocity += Vector3::Transform(Vector3(0.1f, 0.0f, 0.0f), m_rotate);
+			//ステートをダッシュに変更
+			m_state = DASH;
 		}
 		//スタミナが0以下にならないようにする
 		else if (m_stamina <= 0.0f)
@@ -207,7 +203,7 @@ void PlayerBody::KeyBoardEvent()
 	//スペースを押したら
 	if (kbState.IsKeyDown(Keyboard::Space) && m_attackCoolTime <= 0.0f)
 	{
-		//攻撃する
+		//ステートを攻撃にする
 		m_state = ATTACK;
 		//クールタイムを設定
 		m_attackCoolTime = 0.5f;
@@ -261,16 +257,16 @@ void PlayerBody::MouseEvent()
 	//プレイヤーとトーラスの距離が近すぎなければ
 	if (toTorus.LengthSquared() > 0.1f)
 	{
-		// XZ平面上での方向を求める
+		//XZ平面上での方向を求める
 		Vector3 toTorusXZ = Vector3(toTorus.x, 0.0f, toTorus.z);
 		Vector3 forwardXZ = Vector3(forward.x, 0.0f, forward.z);
 		toTorusXZ.Normalize();
 		forwardXZ.Normalize();
 
-		// atan2を用いて現在の方向とトーラス方向の角度を計算
+		//atan2を用いて現在の方向とトーラス方向の角度を計算
 		float angle = std::atan2(toTorusXZ.z, toTorusXZ.x) - std::atan2(forwardXZ.z, forwardXZ.x);
 
-		// -π ～ π の範囲に正規化
+		//-π～πの範囲に正規化
 		if (angle > XM_PI)
 		{
 			angle -= XM_2PI;
@@ -280,29 +276,52 @@ void PlayerBody::MouseEvent()
 			angle += XM_2PI;
 		}
 
-		// 1フレームでの回転角を制限
+		//1フレームでの回転角を制限
 		constexpr float maxRotationPerFrame = XMConvertToRadians(1.0f); 
 		angle = Clamp(angle, -maxRotationPerFrame, maxRotationPerFrame);
 
+		Vector3 velocity;
+
 		//プレイヤーの右
 		if (dot > 0.0f) {
-			// プレイヤーの角度を更新する
+			//プレイヤーの角度を更新する
 			q *= Quaternion::CreateFromAxisAngle(Vector3::UnitY, -angle);
 			//クオータニオンを回転に掛ける
 			m_rotate = q * m_rotate;
-			//プレイヤーを移動する
-			Vector3 velocity = Vector3::Transform(Vector3(-0.07f, 0.0f, 0.0f), m_rotate);
+			//ステートがアイドリングの時
+			if (m_state ==IDLING)
+			{
+				//速度を加える
+				velocity = Vector3::Transform(Vector3(-0.07f, 0.0f, 0.0f), m_rotate);
+			}
+			//ステートがダッシュの時
+			if (m_state == DASH)
+			{
+				//速度を加える
+				velocity = Vector3::Transform(Vector3(-0.12f, 0.0f, 0.0f), m_rotate);
+
+			}
 			//プレイヤーを移動する
 			m_velocity -= velocity;
 		}
 		//プレイヤーの左
 		else if (dot < 0.0f) {
-			// プレイヤーの角度を更新する
+			//プレイヤーの角度を更新する
 			q *= Quaternion::CreateFromAxisAngle(Vector3::UnitY, angle);
 			//クオータニオンを回転に掛ける
 			m_rotate = q * m_rotate;
-			//プレイヤーを移動する
-			Vector3 velocity = Vector3::Transform(Vector3(0.07f, 0.0f, 0.0f), m_rotate);
+			//ステートがアイドリングの時
+			if (m_state == IDLING)
+			{
+				//速度を加える
+				velocity = Vector3::Transform(Vector3(0.07f, 0.0f, 0.0f), m_rotate);
+			}
+			//ステートがダッシュの時
+			if (m_state == DASH)
+			{
+				//速度を加える
+				velocity = Vector3::Transform(Vector3(0.12f, 0.0f, 0.0f), m_rotate);
+			}
 			//プレイヤーを移動する
 			m_velocity -= velocity;
 		}
@@ -321,24 +340,24 @@ void PlayerBody::MouseEvent()
 //バウンディングスフィア生成
 DirectX::BoundingSphere PlayerBody::CreateBoundingSphere(const float& radius)
 {
-	// バウンディングスフィアを宣言する
-	DirectX::BoundingSphere turretBoundingSphere;
-	// バウンディングスフィアの半径を設定する
-	turretBoundingSphere.Radius = radius;
-	// バウンディングスフィアを返す
-	return turretBoundingSphere;
+	//バウンディングスフィアを宣言する
+	DirectX::BoundingSphere BoundingSphere;
+	//バウンディングスフィアの半径を設定する
+	BoundingSphere.Radius = radius;
+	//バウンディングスフィアを返す
+	return BoundingSphere;
 }
 
-// バウンディングスフィアを描画する
+//バウンディングスフィアを描画する
 void PlayerBody::DrawBoundingSphere()
 {
-	// 既定色を設定する
+	//既定色を設定する
 	DirectX::XMVECTOR color = DirectX::Colors::Yellow;
 	auto batch = Graphics::GetInstance();
-	// プリミティブ描画を開始する
+	//プリミティブ描画を開始する
 	batch->DrawPrimitiveBegin(batch->GetViewMatrix(), batch->GetProjectionMatrix());
-	// 砲塔の境界球を描画する
+	//砲塔の境界球を描画する
 	DX::Draw(batch->GetPrimitiveBatch(), m_BoundingSphere, color);
-	// プリミティブ描画を終了する
+	//プリミティブ描画を終了する
 	batch->DrawPrimitiveEnd();
 }

@@ -30,13 +30,13 @@ class EnemyManager
 private:
 	struct EnemyData
 	{
-		float time = 0.0f;					// 出現時間
-		int id = 0;                     //敵の種類
-		DirectX::SimpleMath::Vector3 position;	        // 出現座標
+		float time = 0.0f;// 出現時間
+		int id = 0;//敵の種類
+		DirectX::SimpleMath::Vector3 position;// 出現座標
 	};
 
 	// 敵の総数
-	static const int MAX_ENEMY_COUNT = 1;
+	static const int MAX_ENEMY_COUNT = 3;
 	// 敵の配列
 	std::unique_ptr<IEnemy>  m_crabs[MAX_ENEMY_COUNT];
 	std::unique_ptr<IEnemy> m_sharks[MAX_ENEMY_COUNT];

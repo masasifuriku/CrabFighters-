@@ -15,6 +15,8 @@
 
 #include "FrameWork/DeviceResources.h"
 #include "FrameWork/Graphics.h"
+#include "Framework/Collision.h"
+
 #include "Libraries/Microsoft/DebugDraw.h"
 
 using namespace DirectX;
@@ -78,6 +80,8 @@ void EnemyBoss::Initialize(
 	m_chase  = std::make_unique<BossChase>(this);
 	m_attack = std::make_unique<BossAttack>(this);
 	m_escape = std::make_unique<BossEscape>(this);
+
+	Collision::GetInstance()->SetBoss(this);
 }
 
 /// <summary>

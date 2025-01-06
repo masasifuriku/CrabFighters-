@@ -9,7 +9,7 @@
 #include "StepTimer.h"
 #include "Libraries/EdeLib/ModelManager.h"
 #include "PlayerBody.h"
-
+#include <vector>
 
 class PlayerHand
 {
@@ -23,7 +23,7 @@ private:
 	//プレイヤー自身の変数
 	// クォータニオン
 	DirectX::SimpleMath::Quaternion m_rotate;
-	float m_angle[4];
+	std::vector<float> m_angle;
 	int m_attackCount;
 	float m_time;
 

@@ -85,15 +85,7 @@ void EnemyCrab::Initialize(
 	m_attack = std::make_unique<CrabAttack>(this, m_player,m_hand.get());
 	m_escape = std::make_unique<CrabEscape>(this);
 
-	/*std::vector<Vector3> vec;
-
-	vec.emplace_back(Vector3::Zero);
-	vec.emplace_back(Vector3::Zero);
-	vec.emplace_back(Vector3::Zero);
-	vec.emplace_back(Vector3::Zero);
-
-	m_goals2.push_back(vec);
-	m_goals2.push_back(vec);*/
+	Collision::GetInstance()->SetCrab(this);
 }
 
 /// <summary>
@@ -102,6 +94,7 @@ void EnemyCrab::Initialize(
 /// <param name="timer">StepTimerを受け取る</param>
 void EnemyCrab::Update(float timer)
 {
+	ChangeState();
 	UpdateState(timer);
 }
 
@@ -143,12 +136,6 @@ bool EnemyCrab::IsActive()
 	return false;
 }
 
-//ダメージを受ける
-void EnemyCrab::TakeDamage(float damage)
-{
-	m_health -= damage;
-}
-
 //バウンディングスフィア生成
 DirectX::BoundingSphere EnemyCrab::CreateBoundingSphere(const float& radius)
 {
@@ -172,6 +159,59 @@ void EnemyCrab::DrawBoundingSphere()
 	DX::Draw(batch->GetPrimitiveBatch(), m_BoundingSphere, color);
 	// プリミティブ描画を終了する
 	batch->DrawPrimitiveEnd();
+}
+
+void EnemyCrab::ChangeState()
+{
+	//敵のステート管理
+	//プレイヤーと敵の位置
+	Vector3 Ppos = m_player->GetPos();
+	Vector3 Cpos = m_position;
+	//プレイヤーと敵の距離
+	float dx = Ppos.x - Cpos.x;
+	float dy = Ppos.y - Cpos.y;
+	float dz = Ppos.z - Cpos.z;
+	float distance = std::sqrt(dx * dx + dy * dy + dz * dz);
+	//敵の追跡範囲
+	float SearchRange = 5.0f;
+	//ステートをパトロールにする
+	if (distance >= SearchRange)
+	{
+		m_state = Patrol;
+	}
+	//ステートを追跡にする
+	else if (distance <= SearchRange)
+	{
+		m_state = Chase;
+	}
+	//ステートを攻撃する
+	if (Collision::GetInstance()->CheckHitAttackCrabsToPlayer())
+	{
+		m_state = Battle;
+	}
+	//ステートを逃走にする
+	if (m_health <= 20.0f)
+	{
+		m_state = Escape;
+		if (distance >= 15.0f)
+		{
+			m_state = Patrol;
+		}
+	}
+	//ステートを死亡にする
+	if (m_health <= 0.0f)
+	{
+		m_state = DEAD;
+	}
+	//プレイヤーからカニへの攻撃
+	if (Collision::GetInstance()->CheckHitAttackPlayerToCrab())
+	{
+		//プレイヤーの状態が攻撃なら敵にダメージが入る
+		if (m_player->GetState() == PlayerBody::ATTACK)
+		{
+			TakeDamage(5.0f);
+		}
+	}
 }
 
 //ステートの更新

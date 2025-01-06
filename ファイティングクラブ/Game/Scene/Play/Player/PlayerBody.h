@@ -18,6 +18,8 @@ public:
 	//プレイヤーの状態
 	enum PlayerState {
 		NONE,   //何もしていない
+		IDLING, //アイドリング
+		DASH,   //ダッシュ
 		ATTACK, //攻撃
 		DEAD    //死亡
 	};
@@ -85,7 +87,7 @@ public:
 	//体力を取得
 	float GetHP() const { return m_health; }
 	//ダメージを受ける
-	void TakeDamage(float damage);
+	void TakeDamage(float damage) { m_health -= damage; }
 	//スタミナを取得
 	float GetStamina()const { return m_stamina; }
 	//腕を渡す

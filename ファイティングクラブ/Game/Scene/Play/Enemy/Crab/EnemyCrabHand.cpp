@@ -41,10 +41,8 @@ void EnemyCrabHand::Initialize()
 
 	//‰ñ“]
 	m_rotate = Quaternion::Identity;
-	m_angle[0] = 0.0f;
-	m_angle[1] = 10.0f;
-	m_angle[2] = 20.0f;
-	m_angle[3] = 30.0f;
+	//Šp“x‚ğİ’è‚·‚é
+	m_angle = { 0.0f,10.0f,20.0f,30.0f,40.0f };
 	//UŒ‚ƒ‚[ƒVƒ‡ƒ“ƒJƒEƒ“ƒg
 	m_attackCount = 0;
 }
@@ -70,9 +68,9 @@ void EnemyCrabHand::AttackMotion()
 	if (!reverse)
 	{
 		m_attackCount++;
-		if (m_attackCount >= 3) // ÅŒã‚ÌŠp“x‚É’B‚µ‚½‚ç‹t•ûŒü‚Ö
+		if (m_attackCount >= 4) // ÅŒã‚ÌŠp“x‚É’B‚µ‚½‚ç‹t•ûŒü‚Ö
 		{
-			m_attackCount = 3;
+			m_attackCount = 4;
 			reverse = true;
 		}
 	}

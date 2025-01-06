@@ -44,7 +44,6 @@ void SkyDome::Initialize()
 	);
 
 	// モデルを読み込む
-		// プレイヤーモデルを読み込む
 	m_model = std::make_unique<Ede::ModelManager>();
 	m_model->AddModelData("Dome", L"Resources/Models/seaDome.cmo");
 }
@@ -56,9 +55,8 @@ void SkyDome::Render()
 {
 	// ワールド行列を更新する
 	Matrix  size, world;
-	size = Matrix::CreateScale(1.1f);
+	size = Matrix::CreateScale(0.7f);
 	world = size;
-
 
 	// モデルを描画する
 	m_model->DrawModel("Dome", world);

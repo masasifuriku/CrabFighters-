@@ -45,17 +45,15 @@ void PlayerHand::Initialize()
 	m_model = std::make_unique<Ede::ModelManager>();
 	m_model->AddModelData("CrabRightHand", L"Resources/Models/CrabRightHand.cmo");
 
-	// バウンディングスフィアを生成する
-	m_BoundingSphere = CreateBoundingSphere(0.3f);
-
 	//回転
 	m_rotate = Quaternion::Identity;
-	m_angle[0] = 0.0f;
-	m_angle[1] = 10.0f;
-	m_angle[2] = 20.0f;
-	m_angle[3] = 30.0f;
+	//角度設定
+	m_angle = { 0.0f,10.0f,20.0f,30.0f,40.0f };
 	//攻撃モーションカウント
 	m_attackCount = 0;
+
+	// バウンディングスフィアを生成する
+	m_BoundingSphere = CreateBoundingSphere(0.5f);
 }
 
 /// <summary>
@@ -70,7 +68,7 @@ void PlayerHand::Render(Matrix world)
 	Matrix handWorld = rotation * world;
 
 	//バウンディングスフィアを腕に合わせる
-	translation = Matrix::CreateTranslation(-8.0f, 0.0f, 8.0f);
+	translation = Matrix::CreateTranslation(-9.0f, 0.0f, 9.0f);
 	//腕に合わせたのと体に合わせたのを合わせる
 	Matrix handSphere = translation * handWorld;
 	// バウンディングスフィアの中心を更新
@@ -91,9 +89,9 @@ void PlayerHand::AttackMotion()
 	if (!reverse)
 	{
 		m_attackCount++;
-		if (m_attackCount >= 3) // 最後の角度に達したら逆方向へ
+		if (m_attackCount >= 4) // 最後の角度に達したら逆方向へ
 		{
-			m_attackCount = 3;
+			m_attackCount = 4;
 			reverse = true;
 		}
 	}

@@ -68,12 +68,6 @@ void PlayScene::Initialize()
 	m_Batch = Graphics::GetInstance()->GetSpriteBatch();
 	m_Font = Graphics::GetInstance()->GetFont();
 
-	//当たり判定インスタンスを持ってくる
-	m_collision = Collision::GetInstance();
-	//当たり判定にオブジェクトを渡す
-	m_collision->SetPlayer(m_player.get());
-	m_collision->SetEnemy(m_enemy.get());
-
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 }
@@ -92,12 +86,9 @@ void PlayScene::Update(float elapsedTime)
 	m_player->Update(elapsedTime);
 
 	//敵の更新
-	//m_enemy->Update(elapsedTime, IEnemy::Patrol);
+	m_enemy->Update(elapsedTime, IEnemy::Patrol);
 
 	//敵のステート更新
-	UpdateCrabs();
-	UpdateSharks();
-	UpdateBirds();
 	UpdateBoss();
 
 	//ビューと射影行列の生成
@@ -124,7 +115,7 @@ void PlayScene::Render()
 	//ステージの描画
 	m_stage->Render();
 	//天球の描画
-	//m_dome->Render();
+	m_dome->Render();
 	//デバッグ表示
 	DrawDebug();
 }
@@ -134,7 +125,6 @@ void PlayScene::Render()
 //---------------------------------------------------------
 void PlayScene::Finalize()
 {
-	// do nothing.
 }
 
 //---------------------------------------------------------
@@ -150,159 +140,6 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
-}
-
-void PlayScene::UpdateCrabs()
-{
-	//プレイヤーと敵(カニ)の判定など
-	for (auto& crab : m_enemy->GetActiveCrabs())
-	{
-		//敵のステート管理
-		//プレイヤーと敵の位置
-		Vector3 Ppos = m_player->GetPos();
-		Vector3 Cpos = crab->GetPos();
-		//プレイヤーと敵の距離
-		float dx = Ppos.x - Cpos.x;
-		float dy = Ppos.y - Cpos.y;
-		float dz = Ppos.z - Cpos.z;
-		float distance = std::sqrt(dx * dx + dy * dy + dz * dz);
-		//敵の追跡範囲
-		float SearchRange = 5.0f;
-		//ステートをパトロールにする
-		if (distance >= SearchRange)
-		{
-			crab->SetEnemyState(IEnemy::EnemyState::Patrol);
-		}
-		//ステートを追跡にする
-		else if (distance <= SearchRange)
-		{
-			crab->SetEnemyState(IEnemy::EnemyState::Chase);
-		}
-		//ステートを攻撃する
-		if (Collision::GetInstance()->CheckHitAttackCrabrToPlayer())
-		{
-			crab->SetEnemyState(IEnemy::EnemyState::Battle);
-		}
-		//ステートを逃走にする
-		if (crab->GetHP() <= 20.0f)
-		{
-			crab->SetEnemyState(IEnemy::EnemyState::Escape);
-			if (distance >= 15.0f)
-			{
-				crab->SetEnemyState(IEnemy::EnemyState::Patrol);
-			}
-		}
-		//ステートを死亡にする
-		if (crab->GetHP() <= 0.0f)
-		{
-			crab->SetEnemyState(IEnemy::EnemyState::DEAD);
-		}
-		//プレイヤーからカニへの攻撃
-		if (Collision::GetInstance()->CheckHitAttackPlayerToCrab())
-		{
-			//プレイヤーの状態が攻撃なら敵にダメージが入る
-			if (m_player->GetState() == PlayerBody::ATTACK)
-			{
-				crab->TakeDamage(5.0f);
-			}
-		}
-	}
-}
-
-void PlayScene::UpdateSharks()
-{
-	//プレイヤーと敵(サメ)の当たり判定
-	for (auto& shark : m_enemy->GetActiveSharks())
-	{
-		//敵のステート管理
-		//プレイヤーと敵の位置
-		Vector3 Ppos = m_player->GetPos();
-		Vector3 Spos = shark->GetPos();
-		//プレイヤーと敵の距離
-		float dx = Ppos.x - Spos.x;
-		float dy = Ppos.y - Spos.y;
-		float dz = Ppos.z - Spos.z;
-		float distance = std::sqrt(dx * dx + dy * dy + dz * dz);
-		//敵の追跡範囲
-		float SearchRange = 5.0f;
-		//ステートをパトロールにする
-		if (distance >= SearchRange)
-		{
-			shark->SetEnemyState(IEnemy::EnemyState::Patrol);
-		}
-		//ステートを追跡にする
-		else if (distance <= SearchRange)
-		{
-			shark->SetEnemyState(IEnemy::EnemyState::Chase);
-		}
-		//ステートを逃走にする
-		if (shark->GetHP() <= 20.0f)
-		{
-			shark->SetEnemyState(IEnemy::EnemyState::Escape);
-		}
-		//ステートを死亡にする
-		if (shark->GetHP() <= 0.0f)
-		{
-			shark->SetEnemyState(IEnemy::EnemyState::DEAD);
-		}
-		//プレイヤーからサメへの攻撃
-		if (Collision::GetInstance()->CheckHitAttackPlayerToShark())
-		{
-			//プレイヤーの状態が攻撃なら敵にダメージが入る
-			if (m_player->GetState() == PlayerBody::ATTACK)
-			{
-				shark->TakeDamage(5.0f);
-			}
-		}
-	}
-}
-
-void PlayScene::UpdateBirds()
-{
-	//プレイヤーと敵(鳥)の当たり判定
-	for (auto& bird : m_enemy->GetActiveBirds())
-	{
-		//敵のステート管理
-		//プレイヤーと敵の位置
-		Vector3 Ppos = m_player->GetPos();
-		Vector3 Bpos = bird->GetPos();
-		//プレイヤーと敵の距離
-		float dx = Ppos.x - Bpos.x;
-		float dy = Ppos.y - Bpos.y;
-		float dz = Ppos.z - Bpos.z;
-		float distance = std::sqrt(dx * dx + dy * dy + dz * dz);
-		//敵の追跡範囲
-		float SearchRange = 5.0f;
-		//ステートをパトロールにする
-		if (distance >= SearchRange)
-		{
-			bird->SetEnemyState(IEnemy::EnemyState::Patrol);
-		}
-		//ステートを追跡にする
-		else if (distance <= SearchRange)
-		{
-			bird->SetEnemyState(IEnemy::EnemyState::Chase);
-		}
-		//ステートを逃走にする
-		if (bird->GetHP() <= 20.0f)
-		{
-			bird->SetEnemyState(IEnemy::EnemyState::Escape);
-		}
-		//ステートを死亡にする
-		if (bird->GetHP() <= 0.0f)
-		{
-			bird->SetEnemyState(IEnemy::EnemyState::DEAD);
-		}
-		//プレイヤーから鳥への攻撃
-		if (Collision::GetInstance()->CheckHitAttackPlayerToBird())
-		{
-			//プレイヤーの状態が攻撃なら敵にダメージが入る
-			if (m_player->GetState() == PlayerBody::ATTACK)
-			{
-				bird->TakeDamage(5.0f);
-			}
-		}
-	}
 }
 
 void PlayScene::UpdateBoss()
@@ -341,15 +178,15 @@ void PlayScene::UpdateBoss()
 	{
 		boss->SetEnemyState(IEnemy::EnemyState::DEAD);
 	}
-	//プレイヤーから鳥への攻撃
-	if (Collision::GetInstance()->CheckHitAttackPlayerToBoss())
-	{
-		//プレイヤーの状態が攻撃なら敵にダメージが入る
-		if (m_player->GetState() == PlayerBody::ATTACK)
-		{
-			boss->TakeDamage(5.0f);
-		}
-	}
+	////プレイヤーから鳥への攻撃
+	//if (Collision::GetInstance()->CheckHitAttackPlayerToBoss())
+	//{
+	//	//プレイヤーの状態が攻撃なら敵にダメージが入る
+	//	if (m_player->GetState() == PlayerBody::ATTACK)
+	//	{
+	//		boss->TakeDamage(5.0f);
+	//	}
+	//}
 }
 
 //デバック情報をまとめておく

@@ -22,10 +22,10 @@ CrabPatrol::CrabPatrol(EnemyCrab* crab)
 	m_isInside{ false }
 {
 	// ÉSÅ[ÉãîzóÒÇçÏê¨Ç∑ÇÈ
-	m_goals.emplace_back(Vector3{ -40.0f, -0.000008f, -40.0f });
-	m_goals.emplace_back(Vector3{ 40.0f ,1.752317f ,40.0f });
-	m_goals.emplace_back(Vector3{ -30.056952f, -0.902425f, -1.161875f });
-	m_goals.emplace_back(Vector3{ -20.0f ,1.710116f, 30.0f });
+	m_goals.emplace_back(Vector3{ 20.677824f,   5.715546f,   21.750154f });
+	m_goals.emplace_back(Vector3{ -21.150574f, -2.996116f,   21.016121f });
+	m_goals.emplace_back(Vector3{ 20.612558f,   1.405255f,  -20.664967f });
+	m_goals.emplace_back(Vector3{ -20.646391f, -3.127819f,  -22.142441f });
 }
 
 /// <summary>

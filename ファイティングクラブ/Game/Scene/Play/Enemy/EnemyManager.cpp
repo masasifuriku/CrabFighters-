@@ -99,7 +99,7 @@ void EnemyManager::Update(float timer, IEnemy::EnemyState state)
 	// 敵をスポーンする
 	Spawn(state);
 
-	//配列をきれいにする
+	//配列をクリアする
 	m_activeEnemyCount = 0;
 	m_activeCrabs.clear();
 	m_activeSharks.clear();

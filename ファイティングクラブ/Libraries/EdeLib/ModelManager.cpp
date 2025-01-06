@@ -26,9 +26,8 @@ void Ede::ModelManager::AddModelData(const char* key, const TCHAR* pass)
 	fx->SetDirectory(L"Resources/Models");
 	// モデルを読み込む
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
-	std::unique_ptr<DirectX::Model> temp = DirectX::Model::CreateFromCMO(device, pass, *fx);
 	//モデルを登録する
-	m_model.emplace(key, std::move(temp));
+	m_model.emplace(key, std::move(DirectX::Model::CreateFromCMO(device, pass, *fx)));
 }
 
 //3Dモデルの描画
@@ -38,7 +37,7 @@ void Ede::ModelManager::DrawModel(
 	)
 {
 	//引数で指定されたキーのモデルを探して保存
-	std::map<const char*, std::unique_ptr<DirectX::Model>>::const_iterator it = m_model.find(key);
+	std::unordered_map<const char*, std::unique_ptr<DirectX::Model>>::const_iterator it = m_model.find(key);
 	//見つけたモデルの描画
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = Graphics::GetInstance()->GetCommonStates();

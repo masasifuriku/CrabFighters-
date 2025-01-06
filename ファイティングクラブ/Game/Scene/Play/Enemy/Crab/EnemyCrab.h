@@ -84,7 +84,7 @@ public:
 	//敵が生存中か
 	bool IsActive() override;
 	//ダメージを受ける
-	void TakeDamage(float damage)override;
+	void TakeDamage(float damage)override { m_health -= damage; }
 	//バウンディングスフィア生成
 	DirectX::BoundingSphere CreateBoundingSphere(
 		const float& radius) override;
@@ -97,6 +97,8 @@ public:
 	float GetHP() const override{ return m_health; }
 
 private:
+	//ステート変更
+	void ChangeState();
 	//ステート管理
 	void UpdateState(float time);
 };

@@ -58,12 +58,6 @@ public:
 	SceneID GetNextSceneID() const;
 
 private:
-	//カニの更新
-	void UpdateCrabs();
-	//サメの更新
-	void UpdateSharks();
-	//鳥の更新
-	void UpdateBirds();
 	//ボスの更新
 	void UpdateBoss();
 
