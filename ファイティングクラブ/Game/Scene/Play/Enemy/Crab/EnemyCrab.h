@@ -56,16 +56,11 @@ private:
 	std::unique_ptr<CrabAttack> m_attack;
 	std::unique_ptr<CrabEscape> m_escape;
 
-	//std::vector<std::vector<DirectX::SimpleMath::Vector3>> m_goals2;
-
-
 public:
 	EnemyCrab(PlayerBody* player);
 	~EnemyCrab()override;
 
-	void Initialize(
-		IEnemy::EnemyState state, 
-		DirectX::SimpleMath::Vector3 position);
+	void Initialize(DirectX::SimpleMath::Vector3 position);
 	void Update(float timer);
 	void Render(
 		DirectX::SimpleMath::Vector3 pos,
@@ -79,6 +74,8 @@ public:
 	float GetAngle()const override { return m_angle; }
 	//Šp“x‚ğó‚¯æ‚é
 	void SetAngle(float angle)override { m_angle += angle; }
+	//ó‘Ô‚Ìæ“¾
+	EnemyState GetState() { return m_state; }
 	//ó‘Ô‚Ìİ’è
 	void SetEnemyState(EnemyState state) override { m_state = state; }
 	//“G‚ª¶‘¶’†‚©

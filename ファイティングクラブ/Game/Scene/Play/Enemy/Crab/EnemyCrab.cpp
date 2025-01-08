@@ -52,9 +52,7 @@ EnemyCrab::~EnemyCrab()
 {
 }
 
-void EnemyCrab::Initialize(
-	IEnemy::EnemyState state,
-	DirectX::SimpleMath::Vector3 position)
+void EnemyCrab::Initialize(DirectX::SimpleMath::Vector3 position)
 {
 	// モデルを読み込む
 	m_model = std::make_unique<Ede::ModelManager>();
@@ -63,7 +61,7 @@ void EnemyCrab::Initialize(
 	m_hand = std::make_unique<EnemyCrabHand>();
 	m_hand->Initialize();
 	//状態の設定
-	m_state = state;
+	m_state = NONE;
 	// バウンディングスフィアを生成する
 	m_BoundingSphere = CreateBoundingSphere(0.9f);
 	//座標を初期化する
@@ -121,7 +119,7 @@ void EnemyCrab::Render(
 	{
 		m_model->DrawModel("crab",m_world);
 		m_hand->Render(m_world);
-		DrawBoundingSphere();
+		//DrawBoundingSphere();
 	}
 }
 

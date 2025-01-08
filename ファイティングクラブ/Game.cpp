@@ -60,13 +60,6 @@ void Game::Initialize(HWND window, int width, int height)
     //リソースの読み恋
     m_resource->LoadResource();
 
-    //// デバッグ文字列を作成する
-    //m_debugString = std::make_unique<mylib::DebugString>(
-    //    device,
-    //    context,
-    //    L"Resources/Fonts/SegoeUI_18.spritefont"
-    //);
-
     // シーンマネージャを初期化する
     m_sceneManager = std::make_unique<SceneManager>();
     m_sceneManager->Initialize();

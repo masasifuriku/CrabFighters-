@@ -45,19 +45,19 @@ bool Collision::CheckHitAttackPlayerToCrab()
 	
 	return false;
 }
-//bool Collision::CheckHitAttackPlayerToBoss()
-//{
-//	//˜r‚ðŽ‚Á‚Ä‚­‚é
-//	m_playerHand = m_player->GetHand();
-//	//“–‚½‚Á‚Ä‚½‚çtrue
-//	if (m_playerHand->GetHandBoundingSphere().
-//		Intersects(
-//			m_boss->GetBodyBoundingSphere()))
-//	{
-//		return true;
-//	}
-//	return false;
-//}
+bool Collision::CheckHitAttackPlayerToBoss()
+{
+	//˜r‚ðŽ‚Á‚Ä‚­‚é
+	m_playerHand = m_player->GetHand();
+	//“–‚½‚Á‚Ä‚½‚çtrue
+	if (m_playerHand->GetHandBoundingSphere().
+		Intersects(
+			m_boss->GetBodyBoundingSphere()))
+	{
+		return true;
+	}
+	return false;
+}
 
 //“G‚©‚çƒvƒŒƒCƒ„[‚Ö‚ÌUŒ‚
 bool Collision::CheckHitAttackCrabsToPlayer()
@@ -71,14 +71,14 @@ bool Collision::CheckHitAttackCrabsToPlayer()
 	}
 	return false;
 }
-//bool Collision::CheckHitAttackBossToPlayer()
-//{
-//	//“–‚½‚Á‚Ä‚½‚çtrue
-//	if (m_boss->GetBodyBoundingSphere().
-//		Intersects(
-//			m_player->GetBodyBoundingSphere()))
-//	{
-//		return true;
-//	}
-//	return false;
-//}
+bool Collision::CheckHitAttackBossToPlayer()
+{
+	//“–‚½‚Á‚Ä‚½‚çtrue
+	if (m_boss->GetBodyBoundingSphere().
+		Intersects(
+			m_player->GetBodyBoundingSphere()))
+	{
+		return true;
+	}
+	return false;
+}

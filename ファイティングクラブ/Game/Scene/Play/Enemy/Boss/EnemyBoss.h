@@ -54,9 +54,7 @@ public:
 	EnemyBoss(PlayerBody* player);
 	~EnemyBoss();
 
-	void Initialize(
-		IEnemy::EnemyState state, 
-		DirectX::SimpleMath::Vector3 position);
+	void Initialize(DirectX::SimpleMath::Vector3 position);
 	void Update(float timer);
 	void Render(
 		DirectX::SimpleMath::Vector3 pos,
@@ -70,6 +68,8 @@ public:
 	float GetAngle()const override { return m_angle; }
 	//角度を受け取る
 	void SetAngle(float angle)override { m_angle = angle; }
+	//状態の取得
+	EnemyState GetState() { return m_state; }
 	//状態の設定
 	void SetEnemyState(EnemyState state) override { m_state = state; }
 	//敵が生存中か
@@ -88,6 +88,8 @@ public:
 	float GetHP() const override{ return m_health; }
 
 private:
+	//ステート変更
+	void ChangeState();
 	//ステート管理
 	void UpdateState();
 };

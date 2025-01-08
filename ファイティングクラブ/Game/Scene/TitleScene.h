@@ -23,13 +23,23 @@ private:
 	DirectX::SpriteFont* m_spriteFont;
 
 	// テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_title;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_start01;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_start02;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_exit01;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_exit02;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_arrow;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_back;
 
 	// テクスチャの半分の大きさ
-	DirectX::SimpleMath::Vector2 m_texCenter;
+	DirectX::SimpleMath::Vector2 m_texCenter01;
+	DirectX::SimpleMath::Vector2 m_texCenter02;
 
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
+
+	//選択肢
+	int m_number;
 
 
 public:

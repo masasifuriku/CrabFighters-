@@ -52,7 +52,7 @@ void CrabAttack::Update(float time)
 		if (m_attackCount >= 8)
 		{
 			//攻撃する
-			m_player->TakeDamage(10.0f);
+			m_player->TakeDamage(1.0f);
 			//カウントを戻す
 			m_attackCount = 0;
 			//クールタイムを設定

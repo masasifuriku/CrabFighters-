@@ -58,8 +58,11 @@ public:
 	SceneID GetNextSceneID() const;
 
 private:
-	//ボスの更新
-	void UpdateBoss();
+	// bool 型を表示用の文字列に変換する関数
+	std::wstring BoolToString(bool value)
+	{
+		return value ? L"True" : L"False";
+	}
 
 	//デバック情報
 	void DrawDebug();

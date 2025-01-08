@@ -27,16 +27,12 @@ using namespace DirectX::SimpleMath;
 EnemyManager::EnemyManager(Stage* stage,PlayerBody* player)
 	:
 	m_crabs{},
-	m_sharks{},
-	m_birds{},
 	m_boss{},
 	m_activeEnemyCount{},
 	m_enemyDataList{},
 	m_frameCounter{},
 	m_nowListNumber{},
 	m_activeCrabs{},
-	m_activeSharks{},
-	m_activeBirds{},
 	m_CSVFlag{},
 	m_stage{ stage },
 	m_player{ player }
@@ -68,8 +64,6 @@ void EnemyManager::Initialize()
 	for (int i = 0; i < MAX_ENEMY_COUNT; i++)
 	{
 		m_crabs[i] = std::make_unique<EnemyCrab>(m_player);
-		m_sharks[i] = std::make_unique<EnemyShark>(m_player);
-		m_birds[i] = std::make_unique<EnemyBird>();
 	}
 	//ボスを生成する
 	m_boss = std::make_unique<EnemyBoss>(m_player);
@@ -91,19 +85,17 @@ void EnemyManager::Initialize()
  *
  * @return なし
  */
-void EnemyManager::Update(float timer, IEnemy::EnemyState state)
+void EnemyManager::Update(float timer)
 {
 	// フレームをカウントする
 	m_frameCounter++;
 
 	// 敵をスポーンする
-	Spawn(state);
+	Spawn();
 
 	//配列をクリアする
 	m_activeEnemyCount = 0;
 	m_activeCrabs.clear();
-	m_activeSharks.clear();
-	m_activeBirds.clear();
 
 	//カニの更新
 	for (auto& crab : m_crabs)
@@ -124,44 +116,7 @@ void EnemyManager::Update(float timer, IEnemy::EnemyState state)
 		// アクティブなカニだけ配列に入れる
 		m_activeCrabs.push_back(crab.get());
 	}
-	//サメの更新
-	for (auto& shark : m_sharks)
-	{
-		assert(shark);
 
-		// アクティブなサメだけ更新する
-		if (!shark->IsActive())
-		{
-			continue;
-		}
-
-		shark->Update(timer);
-
-		// アクティブな敵をカウントする
-		m_activeEnemyCount++;
-
-		// アクティブなサメだけ配列に入れる
-		m_activeSharks.push_back(shark.get());
-	}
-	//鳥の更新
-	for (auto& bird : m_birds)
-	{
-		assert(bird);
-
-		// アクティブな鳥だけ更新する
-		if (!bird->IsActive())
-		{
-			continue;
-		}
-
-		bird->Update(timer);
-
-		// アクティブな敵をカウントする
-		m_activeEnemyCount++;
-
-		// アクティブな鳥だけ配列に入れる
-		m_activeBirds.push_back(bird.get());
-	}
 	//ボスの更新
 	m_boss->Update(timer);
 }
@@ -194,38 +149,7 @@ void EnemyManager::Render()
 	
 		crab->Render(pos, normal);
 	}
-	//サメの描画
-	for (auto& shark : m_sharks)
-	{
-		assert(shark);
 
-		// アクティブな敵だけ描画する
-		if (!shark->IsActive())
-		{
-			continue;
-		}
-		//生存中のサメとステージの判定
-		Vector3 pos = m_stage->NormalHitDetection(shark->GetPos()).pos;
-		Matrix normal = m_stage->NormalHitDetection(shark->GetPos()).rotate;
-
-		shark->Render(pos, normal);
-	}
-	//鳥の描画
-	for (auto& bird : m_birds)
-	{
-		assert(bird);
-
-		// アクティブな敵だけ描画する
-		if (!bird->IsActive())
-		{
-			continue;
-		}
-		//生存中の鳥とステージの判定
-		Vector3 pos = m_stage->NormalHitDetection(bird->GetPos()).pos;
-		Matrix normal = m_stage->NormalHitDetection(bird->GetPos()).rotate;
-
-		bird->Render(pos, normal);
-	}
 	//ボスの描画
 	//ボスとステージの判定
 	Vector3 Bpos = m_stage->NormalHitDetection(m_boss->GetPos()).pos;
@@ -235,7 +159,7 @@ void EnemyManager::Render()
 
 
 // 敵を出現させる
-bool EnemyManager::Spawn(IEnemy::EnemyState state)
+bool EnemyManager::Spawn()
 {
 	// 出現データリストが終了した
 	if (m_nowListNumber >= m_enemyDataList.size())
@@ -255,9 +179,7 @@ bool EnemyManager::Spawn(IEnemy::EnemyState state)
 	for (int i = 0; i < MAX_ENEMY_COUNT; i++)
 	{
 		//どれも生存中じゃなければ続けない
-		if (m_crabs[i]->IsActive()  ||
-			m_sharks[i]->IsActive() ||
-			m_birds[i]->IsActive())
+		if (m_crabs[i]->IsActive())
 		{
 			continue;
 		}
@@ -267,29 +189,13 @@ bool EnemyManager::Spawn(IEnemy::EnemyState state)
 			case 0:
 				if (!m_crabs[i]->IsActive())
 				{
-					m_crabs[i]->Initialize(state,
-						m_enemyDataList[m_nowListNumber].position);
-				}
-				break;
-			case 1:
-				if (!m_sharks[i]->IsActive())
-				{
-					m_sharks[i]->Initialize(state,
-						m_enemyDataList[m_nowListNumber].position);
-				}
-				break;
-			case 2:
-				if (!m_birds[i]->IsActive())
-				{
-					m_birds[i]->Initialize(state,
-						m_enemyDataList[m_nowListNumber].position);
+					m_crabs[i]->Initialize(m_enemyDataList[m_nowListNumber].position);
 				}
 				break;
 			case 3:
 				if (!m_boss->IsActive())
 				{
-					m_boss->Initialize(state,
-						m_enemyDataList[m_nowListNumber].position);
+					m_boss->Initialize(m_enemyDataList[m_nowListNumber].position);
 				}
 				break;
 			default:

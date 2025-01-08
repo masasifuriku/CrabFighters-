@@ -24,13 +24,13 @@ public:
 	//攻撃系の当たり判定
 	//プレイヤーからカニへの攻撃当たり判定
 	bool CheckHitAttackPlayerToCrab();
-	////プレイヤーからボスへの攻撃当たり判定
-	//bool CheckHitAttackPlayerToBoss();
+	//プレイヤーからボスへの攻撃当たり判定
+	bool CheckHitAttackPlayerToBoss();
 
 	//カニからプレイヤーへの攻撃当たり判定
 	bool CheckHitAttackCrabsToPlayer();
-	////ボスからプレイヤーへの攻撃当たり判定
-	//bool CheckHitAttackBossToPlayer();
+	//ボスからプレイヤーへの攻撃当たり判定
+	bool CheckHitAttackBossToPlayer();
 
 public:
 	Collision(Collision&&) = default;

@@ -12,8 +12,6 @@
 #pragma once
 #include "Interface/IEnemy.h"
 #include "Crab/EnemyCrab.h"
-#include "Shark/EnemyShark.h"
-#include "Bird/EnemyBird.h"
 #include "Boss/EnemyBoss.h"
 #include <vector>
 
@@ -36,11 +34,9 @@ private:
 	};
 
 	// 敵の総数
-	static const int MAX_ENEMY_COUNT = 3;
+	static const int MAX_ENEMY_COUNT = 1;
 	// 敵の配列
 	std::unique_ptr<IEnemy>  m_crabs[MAX_ENEMY_COUNT];
-	std::unique_ptr<IEnemy> m_sharks[MAX_ENEMY_COUNT];
-	std::unique_ptr<IEnemy>  m_birds[MAX_ENEMY_COUNT];
 	//ボス
 	std::unique_ptr<IEnemy> m_boss;
 	// 生存中の敵数カウンタ
@@ -53,8 +49,6 @@ private:
 	int m_nowListNumber;
 	// アクティブな敵配列
 	std::vector<IEnemy*>  m_activeCrabs;
-	std::vector<IEnemy*> m_activeSharks;
-	std::vector<IEnemy*>  m_activeBirds;
 
 	//ファイルが終わったか
 	bool m_CSVFlag;
@@ -78,22 +72,20 @@ public:
 	void Initialize();
 
 	// 更新処理
-	void Update(float timer, IEnemy::EnemyState state);
+	void Update(float timer);
 
 	// 描画処理
 	void Render();
 
 public:
 	// 敵を出現させる
-	bool Spawn(IEnemy::EnemyState state);
+	bool Spawn();
 	// 全敵数を返す
 	static int GetTotalEnemyCount() { return MAX_ENEMY_COUNT; }
 	// 生存中の敵数を返す
 	int GetActiveEnemyCount() const { return m_activeEnemyCount; }
 	// 生存中の敵配列を取得する
 	std::vector<IEnemy*>& GetActiveCrabs() { return m_activeCrabs; }
-	std::vector<IEnemy*>& GetActiveSharks() { return m_activeSharks; }
-	std::vector<IEnemy*>& GetActiveBirds() { return m_activeBirds; }
 	//ボスを取得する 
 	std::unique_ptr<IEnemy>& GetBoss() { return m_boss; }
 	//ファイルが終了したか

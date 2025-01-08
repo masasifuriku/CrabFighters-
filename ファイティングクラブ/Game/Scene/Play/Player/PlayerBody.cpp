@@ -160,7 +160,7 @@ void PlayerBody::Render()
 		// ƒ‚ƒfƒ‹‚ð•`‰æ‚·‚é
 		m_model->DrawModel("CrabBody", m_world);
 		m_hand->Render(m_world);
-		DrawBoundingSphere();
+		//DrawBoundingSphere();
 
 		m_torus->Draw(m_torusWorld, view, proj, Colors::DarkGreen);
 	}

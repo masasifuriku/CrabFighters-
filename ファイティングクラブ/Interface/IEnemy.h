@@ -28,6 +28,8 @@ public:
 	virtual float GetAngle()const = 0;
 	//角度を受け取る
 	virtual void SetAngle(float angle) = 0;
+	//敵の状態を渡す
+	virtual EnemyState GetState() = 0;
 	//敵の状態を設定する
 	virtual void SetEnemyState(EnemyState state) = 0;
 	// 敵が生存中か
@@ -47,7 +49,7 @@ public:
 	//仮想デストラクタ
 	virtual ~IEnemy() = default;
 	//初期化
-	virtual void Initialize(EnemyState state,DirectX::SimpleMath::Vector3 position) = 0;
+	virtual void Initialize(DirectX::SimpleMath::Vector3 position) = 0;
 	//更新
 	virtual void Update(float elapsedTime) = 0;
 	//描画

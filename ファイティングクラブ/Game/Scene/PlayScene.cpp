@@ -77,8 +77,6 @@ void PlayScene::Initialize()
 //---------------------------------------------------------
 void PlayScene::Update(float elapsedTime)
 {
-	UNREFERENCED_PARAMETER(elapsedTime);
-
 	//カメラの更新
 	m_camera->Update(m_player->GetPos(), Matrix::Identity);
 
@@ -86,10 +84,7 @@ void PlayScene::Update(float elapsedTime)
 	m_player->Update(elapsedTime);
 
 	//敵の更新
-	m_enemy->Update(elapsedTime, IEnemy::Patrol);
-
-	//敵のステート更新
-	UpdateBoss();
+	m_enemy->Update(elapsedTime);
 
 	//ビューと射影行列の生成
 	Graphics::GetInstance()->SetProjectionMatrix(m_camera->GetProjectionMatrix());
@@ -142,91 +137,40 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 	return IScene::SceneID::NONE;
 }
 
-void PlayScene::UpdateBoss()
-{
-	//ボスを入れておく
-	auto& boss = m_enemy->GetBoss();
-
-	//ボスのステート管理
-	//プレイヤーとボスの位置
-	Vector3 Ppos = m_player->GetPos();
-	Vector3 Bpos = boss->GetPos();
-	//プレイヤーとボスの距離
-	float dx = Ppos.x - Bpos.x;
-	float dy = Ppos.y - Bpos.y;
-	float dz = Ppos.z - Bpos.z;
-	float distance = std::sqrt(dx * dx + dy * dy + dz * dz);
-	//ボスの追跡範囲
-	float SearchRande = 5.0f;
-	//ステートをパトロールにする
-	if (distance >= SearchRande)
-	{
-		boss->SetEnemyState(IEnemy::EnemyState::Patrol);
-	}
-	//ステートを追跡にする
-	else if (distance <= SearchRande)
-	{
-		boss->SetEnemyState(IEnemy::EnemyState::Chase);
-	}
-	//ステートを逃走にする
-	if (boss->GetHP() <= 20.0f)
-	{
-		boss->SetEnemyState(IEnemy::EnemyState::Escape);
-	}
-	//ステートを死亡にする
-	if (boss->GetHP() <= 0.0f)
-	{
-		boss->SetEnemyState(IEnemy::EnemyState::DEAD);
-	}
-	////プレイヤーから鳥への攻撃
-	//if (Collision::GetInstance()->CheckHitAttackPlayerToBoss())
-	//{
-	//	//プレイヤーの状態が攻撃なら敵にダメージが入る
-	//	if (m_player->GetState() == PlayerBody::ATTACK)
-	//	{
-	//		boss->TakeDamage(5.0f);
-	//	}
-	//}
-}
-
 //デバック情報をまとめておく
 void PlayScene::DrawDebug()
 {
 	//始める
 	m_Batch->Begin();
 	//// デバッグ情報を「DebugString」で表示する
-	m_Font->DrawString(m_Batch, L"Play Scene", Vector2(10, 10), Colors::Aqua);
+	m_Font->DrawString(m_Batch, L"Play Scene", Vector2(10, 10), Colors::Black);
 	//生存中のカニの情報
+	float yPosition = 30.0f;
 	for (auto& crab : m_enemy->GetActiveCrabs())
 	{
 		std::wstring crabHP = L"Crab:" + std::to_wstring(crab->GetHP());
-		m_Font->DrawString(m_Batch, crabHP.c_str(), Vector2(10, 30), Colors::Aqua);
+		std::wstring crabState = L" State: " +std::to_wstring(crab->GetState());
+		std::wstring CisAttacking = L" CAttack: " + BoolToString(Collision::GetInstance()->CheckHitAttackCrabsToPlayer());
+		std::wstring PisAttacking = L" PAttack: " + BoolToString(Collision::GetInstance()->CheckHitAttackPlayerToCrab());
+		m_Font->DrawString(m_Batch, crabHP.c_str(), Vector2(10, yPosition), Colors::Black);
+		m_Font->DrawString(m_Batch, crabState.c_str(), Vector2(180, yPosition), Colors::Black);
+		m_Font->DrawString(m_Batch, CisAttacking.c_str(), Vector2(260, yPosition), Colors::Black);
+		m_Font->DrawString(m_Batch, PisAttacking.c_str(), Vector2(410, yPosition), Colors::Black);
+		yPosition += 20.0f; 
 	}
-	//生存中のサメの情報
-	for (auto& shark : m_enemy->GetActiveSharks())
-	{
-		std::wstring sharkHP = L"Shark:" + std::to_wstring(shark->GetHP());
-		m_Font->DrawString(m_Batch, sharkHP.c_str(), Vector2(10, 50), Colors::Aqua);
-	}	
-	//生存中の鳥の情報
-	for (auto& bird : m_enemy->GetActiveBirds())
-	{
-		std::wstring birdHP = L"Bird:" + std::to_wstring(bird->GetHP());
-		m_Font->DrawString(m_Batch, birdHP.c_str(), Vector2(10, 70), Colors::Aqua);
-	}
-	//ボスの情報
-	auto& boss = m_enemy->GetBoss();
-	std::wstring bossHP = L"Boss:" + std::to_wstring(boss->GetHP());
-	m_Font->DrawString(m_Batch, bossHP.c_str(), Vector2(10, 90), Colors::Aqua);
+	////ボスの情報
+	//auto& boss = m_enemy->GetBoss();
+	//std::wstring bossHP = L"Boss:" + std::to_wstring(boss->GetHP());
+	//m_Font->DrawString(m_Batch, bossHP.c_str(), Vector2(10, 90), Colors::Aqua);
 	//生存中の敵の総数
 	std::wstring ActiveEnemy = L"ActiveEnemy:" + std::to_wstring(m_enemy->GetActiveEnemyCount());
-	m_Font->DrawString(m_Batch, ActiveEnemy.c_str(), Vector2(10, 110), Colors::Aqua);
+	m_Font->DrawString(m_Batch, ActiveEnemy.c_str(), Vector2(10, 110), Colors::Black);
 	//プレイヤーのスタミナ
 	std::wstring PSta = L"Player/Stamina:" + std::to_wstring(m_player->GetStamina());
-	m_Font->DrawString(m_Batch, PSta.c_str(), Vector2(10, 130), Colors::Aqua);
+	m_Font->DrawString(m_Batch, PSta.c_str(), Vector2(10, 130), Colors::Black);
 	//プレイヤーの体力
 	std::wstring Php = L"Player/HP:" + std::to_wstring(m_player->GetHP());
-	m_Font->DrawString(m_Batch, Php.c_str(), Vector2(10, 150), Colors::Aqua);
+	m_Font->DrawString(m_Batch, Php.c_str(), Vector2(10, 150), Colors::Black);
 	//終わり
 	m_Batch->End();
 }

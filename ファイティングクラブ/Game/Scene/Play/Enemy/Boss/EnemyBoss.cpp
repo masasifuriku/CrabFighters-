@@ -51,15 +51,13 @@ EnemyBoss::~EnemyBoss()
 {
 }
 
-void EnemyBoss::Initialize(
-	IEnemy::EnemyState state,
-	DirectX::SimpleMath::Vector3 position)
+void EnemyBoss::Initialize(DirectX::SimpleMath::Vector3 position)
 {
 	// モデルを読み込む
 	m_model = std::make_unique<Ede::ModelManager>();
 	m_model->AddModelData("Boss", L"Resources/Models/dice.cmo");
 	//状態の設定
-	m_state = state;
+	m_state = NONE;
 	// バウンディングスフィアを生成する
 	m_BoundingSphere = CreateBoundingSphere(11.0f);
 	//座標を初期化する
@@ -156,6 +154,49 @@ void EnemyBoss::DrawBoundingSphere()
 	DX::Draw(batch->GetPrimitiveBatch(), m_BoundingSphere, color);
 	// プリミティブ描画を終了する
 	batch->DrawPrimitiveEnd();
+}
+
+void EnemyBoss::ChangeState()
+{
+	//プレイヤーとボスの位置
+	Vector3 Ppos = m_player->GetPos();
+	Vector3 Bpos = m_position;
+	//プレイヤーとボスの距離
+	float dx = Ppos.x - Bpos.x;
+	float dy = Ppos.y - Bpos.y;
+	float dz = Ppos.z - Bpos.z;
+	float distance = std::sqrt(dx * dx + dy * dy + dz * dz);
+	//ボスの追跡範囲
+	float SearchRande = 5.0f;
+	//ステートをパトロールにする
+	if (distance >= SearchRande)
+	{
+		m_state = Patrol;
+	}
+	//ステートを追跡にする
+	else if (distance <= SearchRande)
+	{
+		m_state = Chase;
+	}
+	//ステートを逃走にする
+	if (m_health <= 20.0f)
+	{
+		m_state = Escape;
+	}
+	//ステートを死亡にする
+	if (m_health <= 0.0f)
+	{
+		m_state = DEAD;
+	}
+	//プレイヤーからボスへの攻撃
+	if (Collision::GetInstance()->CheckHitAttackPlayerToBoss())
+	{
+		//プレイヤーの状態が攻撃なら敵にダメージが入る
+		if (m_player->GetState() == PlayerBody::ATTACK)
+		{
+			TakeDamage(5.0f);
+		}
+	}
 }
 
 //ステートの更新
