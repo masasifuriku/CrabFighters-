@@ -192,7 +192,7 @@ bool EnemyManager::Spawn()
 					m_crabs[i]->Initialize(m_enemyDataList[m_nowListNumber].position);
 				}
 				break;
-			case 3:
+			case 1:
 				if (!m_boss->IsActive())
 				{
 					m_boss->Initialize(m_enemyDataList[m_nowListNumber].position);

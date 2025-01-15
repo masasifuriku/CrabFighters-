@@ -187,7 +187,13 @@
     <ClInclude Include="Framework\Resources.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\Scene\PlayScene.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Boss\Body\EnemyBossBody.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Boss\EnemyBoss.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Boss\Hand\EnemyBossLeftHand.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Boss\Hand\EnemyBossRightHand.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Boss\Head\EnemyBossHead.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Boss\Leg\EnemyBossLeftLeg.h" />
+    <ClInclude Include="Game\Scene\Play\Enemy\Boss\Leg\EnemyBossRightLeg.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Boss\States\BossAttack.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Boss\States\BossChase.h" />
     <ClInclude Include="Game\Scene\Play\Enemy\Boss\States\BossEscape.h" />
@@ -227,7 +233,13 @@
     <ClCompile Include="Framework\Resources.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\Scene\PlayScene.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Boss\Body\EnemyBossBody.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Boss\EnemyBoss.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Boss\Hand\EnemyBossLeftHand.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Boss\Hand\EnemyBossRightHand.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Boss\Head\EnemyBossHead.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Boss\Leg\EnemyBossLeftLeg.cpp" />
+    <ClCompile Include="Game\Scene\Play\Enemy\Boss\Leg\EnemyBossRightLeg.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Boss\States\BossAttack.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Boss\States\BossChase.cpp" />
     <ClCompile Include="Game\Scene\Play\Enemy\Boss\States\BossEscape.cpp" />
